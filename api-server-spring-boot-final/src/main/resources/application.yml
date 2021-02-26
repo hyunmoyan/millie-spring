@@ -7,7 +7,7 @@ spring:
 
   datasource:
     platform: mysql
-    url: jdbc:mysql://database-1.cackxegznidw.ap-northeast-2.rds.amazonaws.com/test?autoReconnect=true # 변경해주세요
+    url: jdbc:mysql://database-1.cackxegznidw.ap-northeast-2.rds.amazonaws.com/firstDB # 변경해주세요
     username: admin # 변경해주세요
     password: # 변경해주세요
     driver-class-name: com.mysql.cj.jdbc.Driver
