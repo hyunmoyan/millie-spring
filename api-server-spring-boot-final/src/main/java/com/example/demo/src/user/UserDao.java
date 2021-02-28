@@ -31,12 +31,12 @@ public class UserDao {
     }
 
     public GetUserRes getUser(int userIdx){
-        return this.jdbcTemplate.queryForObject("select * from UserInfo where userIdx = ?",
+        return this.jdbcTemplate.queryForObject("select * from UserInfo where user_idx = ?",
                 (rs, rowNum) -> new GetUserRes(
-                        rs.getInt("userIdx"),
-                        rs.getString("userName"),
-                        rs.getString("ID"),
-                        rs.getString("Email"),
+                        rs.getInt("user_idx"),
+                        rs.getString("nickname"),
+                        rs.getString("user"),
+                        rs.getString("status"),
                         rs.getString("password")),
                 userIdx);
     }
