@@ -33,7 +33,7 @@ public class UserDao {
     public GetUserRes getUser(int userIdx){
         return this.jdbcTemplate.queryForObject("select * from user where id = ?",
                 (rs, rowNum) -> new GetUserRes(
-                        rs.getInt("user_idx"),
+                        rs.getInt("id"),
                         rs.getString("nickname"),
                         rs.getString("user"),
                         rs.getString("status"),
