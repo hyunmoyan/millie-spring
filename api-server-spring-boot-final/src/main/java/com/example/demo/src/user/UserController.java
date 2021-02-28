@@ -17,7 +17,7 @@ import static com.example.demo.config.BaseResponseStatus.*;
 import static com.example.demo.utils.ValidationRegex.isRegexEmail;
 
 @RestController
-@RequestMapping("/app/users")
+@RequestMapping("/users")
 public class UserController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -46,12 +46,13 @@ public class UserController {
      * [GET] /users?userIdx= && Email=
      * @return BaseResponse<List<GetUserRes>>
      */
+//    @RequestParam(required = false) String Email
     //Query String
     @ResponseBody
     @GetMapping("") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetUserRes>> getUsers(@RequestParam(required = false) String Email) {
+    public BaseResponse<List<GetUserRes>> getUsers() {
         // Get Users
-        List<GetUserRes> getUsersRes = userProvider.getUsers(Email);
+        List<GetUserRes> getUsersRes = userProvider.getUsers();
         return new BaseResponse<>(getUsersRes);
     }
 

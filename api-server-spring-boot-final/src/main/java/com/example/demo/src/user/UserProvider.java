@@ -34,10 +34,10 @@ public class UserProvider {
         this.jwtService = jwtService;
     }
 
-    public List<GetUserRes> getUsers(String email){
-        List<GetUserRes> getUsersRes = userDao.getUsers(email);
+    public List<GetUserRes> getUsers(){
+        List<GetUserRes> getUsersRes = userDao.getUsers();
         return getUsersRes;
-                    }
+    }
 
 
     public GetUserRes getUser(int userIdx) {
