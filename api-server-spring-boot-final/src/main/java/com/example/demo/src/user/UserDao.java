@@ -19,15 +19,15 @@ public class UserDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<GetUserRes> getUsers(String email){
-        return this.jdbcTemplate.query("select * from UserInfo where email =?",
+    public List<GetUserRes> getUsers(){
+        return this.jdbcTemplate.query("select * from user",
                 (rs, rowNum) -> new GetUserRes(
-                        rs.getInt("userIdx"),
-                        rs.getString("userName"),
-                        rs.getString("ID"),
-                        rs.getString("Email"),
-                        rs.getString("password")),
-                email);
+                        rs.getInt("id"),
+                        rs.getString("nickname"),
+                        rs.getString("user"),
+                        rs.getString("status"),
+                        rs.getString("password"))
+                );
     }
 
     public GetUserRes getUser(int userIdx){
