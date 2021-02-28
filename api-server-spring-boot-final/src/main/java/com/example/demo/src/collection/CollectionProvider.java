@@ -1,7 +1,6 @@
-package com.example.demo.src.book;
+package com.example.demo.src.collection;
 
-import com.example.demo.src.book.model.*;
-import com.example.demo.src.user.UserDao;
+import com.example.demo.src.collection.model.*;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +12,9 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Service
-public class BookProvider {
+public class CollectionProvider {
 
-    private final BookDao bookDao;
+    private final CollectionDao collectionDao;
     private final JwtService jwtService;
 
     private JdbcTemplate jdbcTemplate;
@@ -28,17 +27,17 @@ public class BookProvider {
     }
 
     @Autowired
-    public BookProvider(BookDao bookDao, JwtService jwtService) {
-        this.bookDao = bookDao;
+    public CollectionProvider(CollectionDao collectionDao, JwtService jwtService) {
+        this.collectionDao = collectionDao;
         this.jwtService = jwtService;
     }
 
-    public List<GetBookRes> getBooks(){
-        List<GetBookRes> getBooksRes = bookDao.getBooks();
-        return getBooksRes;
+    public List<GetCollectionRes> getCollections(){
+        List<GetCollectionRes> getCollectionsRes = collectionDao.getCollections();
+        return getCollectionsRes;
     }
-    public GetBookRes getBook(int collectionId){
-        GetBookRes getBookRes = bookDao.getBook(collectionId);
-        return  getBookRes;
+    public GetCollectionRes getCollection(int collectionId){
+        GetCollectionRes getCollectionRes = collectionDao.getCollection(collectionId);
+        return  getCollectionRes;
     }
 }

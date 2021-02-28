@@ -1,13 +1,7 @@
-package com.example.demo.src.book;
+package com.example.demo.src.collection;
 
 
 
-import com.example.demo.config.BaseException;
-import com.example.demo.config.secret.Secret;
-import com.example.demo.src.book.model.*;
-import com.example.demo.src.user.UserDao;
-import com.example.demo.src.user.UserProvider;
-import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,14 +11,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
-import static com.example.demo.config.BaseResponseStatus.*;
-
 @Service
-public class BookService {
+public class CollectionService {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final BookDao bookDao;
-    private final BookProvider bookProvider;
+    private final CollectionDao collectionDao;
+    private final CollectionProvider collectionProvider;
     private final JwtService jwtService;
     private JdbcTemplate jdbcTemplate;
 
@@ -34,9 +26,9 @@ public class BookService {
     }
 
     @Autowired
-    public BookService(BookDao bookDao, BookProvider bookProvider, JwtService jwtService) {
-        this.bookDao = bookDao;
-        this.bookProvider = bookProvider;
+    public CollectionService(CollectionDao collectionDao, CollectionProvider collectionProvider, JwtService jwtService) {
+        this.collectionDao = collectionDao;
+        this.collectionProvider = collectionProvider;
         this.jwtService = jwtService;
 
     }

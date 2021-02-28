@@ -1,4 +1,4 @@
-package com.example.demo.src.book.model;
+package com.example.demo.src.collection.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,11 +11,11 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 
-public class GetBookRes {
+public class GetCollectionRes {
     private String title;
     private List<Map<String, Object>> list;
 
-    public GetBookRes() {
+    public GetCollectionRes() {
     }
 }
 
