@@ -38,13 +38,20 @@ public class BookController {
         this.jwtService = jwtService;
     }
 
+    @ResponseBody
+    @GetMapping("") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<List<GetBookRes>> getBooks() {
+        // Get Users
+        List<GetBookRes> getBooksRes = bookProvider.getBooks();
+        return new BaseResponse<>(getBooksRes);
+    }
 
 //    특정 책 컬렉션 조 api [get] /books/{collection_id}
     @ResponseBody
     @GetMapping("/{collectionId}") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<GetBookRes> getBooks(@PathVariable("collectionId") int collectionId) {
+    public BaseResponse<GetBookRes> getBook(@PathVariable("collectionId") int collectionId) {
         // Get Users
-        GetBookRes getBooksRes = bookProvider.getBooks(collectionId);
-        return new BaseResponse<>(getBooksRes);
+        GetBookRes getBookRes = bookProvider.getBook(collectionId);
+        return new BaseResponse<>(getBookRes);
     }
 }

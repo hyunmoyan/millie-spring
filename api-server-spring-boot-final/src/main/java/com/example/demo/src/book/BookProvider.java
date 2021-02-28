@@ -33,8 +33,12 @@ public class BookProvider {
         this.jwtService = jwtService;
     }
 
-    public GetBookRes getBooks(int collectionId){
-        GetBookRes getBooksRes = bookDao.getBook(collectionId);
-        return  getBooksRes;
+    public List<GetBookRes> getBooks(){
+        List<GetBookRes> getBooksRes = bookDao.getBooks();
+        return getBooksRes;
+    }
+    public GetBookRes getBook(int collectionId){
+        GetBookRes getBookRes = bookDao.getBook(collectionId);
+        return  getBookRes;
     }
 }
