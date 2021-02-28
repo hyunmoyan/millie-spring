@@ -39,12 +39,12 @@ public class BookController {
     }
 
 
-//    책 조회 api [get] /books
+//    특정 책 컬렉션 조 api [get] /books/{collection_id}
     @ResponseBody
-    @GetMapping("") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<GetBookRes> getBooks() {
+    @GetMapping("/{collectionId}") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<GetBookRes> getBooks(@PathVariable("collectionId") int collectionId) {
         // Get Users
-        GetBookRes getBooksRes = bookProvider.getBooks();
+        GetBookRes getBooksRes = bookProvider.getBooks(collectionId);
         return new BaseResponse<>(getBooksRes);
     }
 }

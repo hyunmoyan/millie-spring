@@ -20,11 +20,11 @@ public class BookDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public GetBookRes getBook(){
+    public GetBookRes getBook(int collectionId){
         GetBookRes getBookRes = new GetBookRes();
         getBookRes.setList(this.jdbcTemplate.queryForList("select collection.id as collection_id, book.id as book_id, book.title as title, author, image from book join collection_books on book.id = collection_books.book_id\n" +
-                "inner join collection on collection_books.collection_id = collection.id;"));
-        getBookRes.setTitle(this.jdbcTemplate.queryForObject("select title from collection where collection.id = '1';", String.class));
+                "inner join collection on collection_books.collection_id = collection.id where collection.id = ?;", collectionId));
+        getBookRes.setTitle(this.jdbcTemplate.queryForObject("select title from collection where collection.id = ?;", String.class, collectionId));
         return getBookRes;
     }
 }
