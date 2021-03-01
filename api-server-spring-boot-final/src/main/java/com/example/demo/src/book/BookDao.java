@@ -2,19 +2,15 @@ package com.example.demo.src.book;
 
 
 import com.example.demo.src.book.model.*;
-import com.example.demo.src.book.model.GetBookRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class BookDao {
-
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -22,24 +18,29 @@ public class BookDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<GetBookRes> getBooks(){
-        List<GetBookRes> getBooksRes =new ArrayList<>();
-        int cnt = this.jdbcTemplate.queryForObject("select count(*) from collection;", Integer.class).intValue();
-        for(int i = 1; i < cnt+1 ; i++) {
-            GetBookRes getBookRes = new GetBookRes();
-            getBookRes.setTitle(this.jdbcTemplate.queryForObject("select title from collection where collection.id = ?;", String.class, i));
-            getBookRes.setList(this.jdbcTemplate.queryForList("select collection.id as collection_id, book.id as book_id, book.title as title, author, image from book join collection_books on book.id = collection_books.book_id\n" +
-                    "inner join collection on collection_books.collection_id = collection.id where collection.id = ?;", i));
-            getBooksRes.add(getBookRes);
+    public List<GetBookRes> getBooks(String category){
+        if (category == null || category.equals("")){
+            return this.jdbcTemplate.query("select category_id, category.name as category_name, book.id as book_id, title, author, image  from book\n" +
+                            "join category on category.category_id = category;",
+                    (rs, rowNum) -> new GetBookRes(
+                            rs.getInt("category_id"),
+                            rs.getString("category_name"),
+                            rs.getInt("book_id"),
+                            rs.getString("title"),
+                            rs.getString("author"),
+                            rs.getString("image")
+                    ));
         }
-        return getBooksRes;
-    }
-
-    public GetBookRes getBook(int collectionId){
-        GetBookRes getBookRes = new GetBookRes();
-        getBookRes.setList(this.jdbcTemplate.queryForList("select collection.id as collection_id, book.id as book_id, book.title as title, author, image from book join collection_books on book.id = collection_books.book_id\n" +
-                "inner join collection on collection_books.collection_id = collection.id where collection.id = ?;", collectionId));
-        getBookRes.setTitle(this.jdbcTemplate.queryForObject("select title from collection where collection.id = ?;", String.class, collectionId));
-        return getBookRes;
+        return this.jdbcTemplate.query("select category_id, category.name as category_name, book.id as book_id, title, author, image  from book\n" +
+                        "join category on category.category_id = category where category.category_id = ?;",
+                (rs, rowNum) -> new GetBookRes(
+                        rs.getInt("category_id"),
+                        rs.getString("category_name"),
+                        rs.getInt("book_id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getString("image")
+                ),
+                category);
     }
 }

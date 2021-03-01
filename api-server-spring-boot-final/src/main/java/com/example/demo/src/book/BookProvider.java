@@ -1,7 +1,8 @@
 package com.example.demo.src.book;
 
-import com.example.demo.src.book.model.*;
+import com.example.demo.src.book.model.GetBookRes;
 import com.example.demo.src.user.UserDao;
+import com.example.demo.src.user.model.*;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,12 +34,8 @@ public class BookProvider {
         this.jwtService = jwtService;
     }
 
-    public List<GetBookRes> getBooks(){
-        List<GetBookRes> getBooksRes = bookDao.getBooks();
+    public List<GetBookRes> getBooks(String category){
+        List<GetBookRes> getBooksRes = bookDao.getBooks(category);
         return getBooksRes;
-    }
-    public GetBookRes getBook(int collectionId){
-        GetBookRes getBookRes = bookDao.getBook(collectionId);
-        return  getBookRes;
     }
 }

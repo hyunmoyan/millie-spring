@@ -1,7 +1,5 @@
 package com.example.demo.src.book;
 
-
-
 import com.example.demo.config.BaseException;
 import com.example.demo.config.secret.Secret;
 import com.example.demo.src.book.model.*;

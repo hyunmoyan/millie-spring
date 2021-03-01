@@ -4,18 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-import java.util.Map;
-
 @Getter
 @Setter
 @AllArgsConstructor
-
 public class GetBookRes {
-    private String title;
-    private List<Map<String, Object>> list;
-
-    public GetBookRes() {
-    }
+    private int CateId;
+    private String CateName;
+    private int BookID;
+    private String Title;
+    private String Author;
+    private String Image;
 }
-
