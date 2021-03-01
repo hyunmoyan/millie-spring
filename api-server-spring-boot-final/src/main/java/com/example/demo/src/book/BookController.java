@@ -1,7 +1,9 @@
 package com.example.demo.src.book;
 
 
-import com.example.demo.src.user.model.GetUserRes;
+import com.example.demo.config.BaseException;
+import com.example.demo.src.book.model.GetBookRes;
+import com.example.demo.src.book.model.PostBookRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseResponse;
@@ -39,6 +41,23 @@ public class BookController {
         // Get Users
         List<GetBookRes> getBooksRes = bookProvider.getBooks(category);
         return new BaseResponse<>(getBooksRes);
+    }
+
+    @ResponseBody
+    @PostMapping("")
+    public BaseResponse<PostBookRes> createBook(@RequestBody PostBookReq postBookReq) throws BaseException {
+        if(postBookReq.getTitle() == null || postBookReq.getAuthor() == null){
+            return new BaseResponse<>(POST_BOOKS_EMPTY_TITLE);
+        }
+        if(postBookReq.getCategory() >18|| 0 > postBookReq.getCategory()){
+            return new BaseResponse<>(POST_BOOKS_INVAILD_CATEGORY);
+        }
+        try {
+            PostBookRes postBookRes = bookService.createBook(postBookReq);
+            return new BaseResponse<>(postBookRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
     }
 
 }

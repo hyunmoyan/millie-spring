@@ -38,4 +38,6 @@ public class BookProvider {
         List<GetBookRes> getBooksRes = bookDao.getBooks(category);
         return getBooksRes;
     }
+
+    public int checkTitle(String title) {return bookDao.checkTitle(title); }
 }
