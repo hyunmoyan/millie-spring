@@ -43,4 +43,17 @@ public class BookDao {
                 ),
                 category);
     }
+
+    public int createBook(PostBookReq postBookReq){
+        this.jdbcTemplate.update("insert into book (title, author, file, image, category) values (?,?,?,?,?);",
+                new Object[]{postBookReq.getTitle(), postBookReq.getAuthor(), postBookReq.getFile(), postBookReq.getImage(), postBookReq.getCategory()}
+        );
+        return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
+    }
+
+    public int checkTitle(String title){
+        return this.jdbcTemplate.queryForObject("select exists(select title from book where title = ?)",
+                int.class,
+                title);
+    }
 }
