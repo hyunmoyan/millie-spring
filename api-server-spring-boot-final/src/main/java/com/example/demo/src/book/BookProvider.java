@@ -1,8 +1,9 @@
 package com.example.demo.src.book;
 
+import com.example.demo.config.BaseException;
+import com.example.demo.config.BaseResponseStatus;
+import com.example.demo.src.book.model.GetBookInfoRes;
 import com.example.demo.src.book.model.GetBookRes;
-import com.example.demo.src.user.UserDao;
-import com.example.demo.src.user.model.*;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.util.List;
+
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
 public class BookProvider {
@@ -34,10 +37,18 @@ public class BookProvider {
         this.jwtService = jwtService;
     }
 
+    public GetBookInfoRes getBookInfo(int bookId) throws BaseException {
+        if(bookDao.checkId(bookId)==0){
+            throw new BaseException(BaseResponseStatus.POST_BOOKS_INVALID_NUMBER);
+        }
+        GetBookInfoRes getBookInfoRes = bookDao.getBookInfo(bookId);
+        return getBookInfoRes;
+    }
+
     public List<GetBookRes> getBooks(String category){
         List<GetBookRes> getBooksRes = bookDao.getBooks(category);
         return getBooksRes;
     }
 
-    public int checkTitle(String title) {return bookDao.checkTitle(title); }
+    public int checkTitle(String title) { return bookDao.checkTitle(title); }
 }
