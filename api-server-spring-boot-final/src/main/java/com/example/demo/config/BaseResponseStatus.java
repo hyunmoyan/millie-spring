@@ -31,8 +31,12 @@ public enum BaseResponseStatus {
 
     // [POST] /books
     POST_BOOKS_EMPTY_TITLE(false, 2020, "책 제목 혹은 작가 비었습니다."),
-    POST_BOOKS_INVAILD_CATEGORY(false, 2021, "유효하지 않은 카테고리 번호입니다."),
+    POST_BOOKS_INVALID_NUMBER(false, 2021, "유효하지 않은 번호입니다."),
     POST_BOOKS_EXITS_TITLE(false, 2022, "이미 있는 책입니다."),
+
+    // /shelfs
+    GET_SHELFS_INVAILD_NUMBER(false, 2030, "shelf: 유효하지 않은 번호입니다."),
+
     /**
      * 3000 : Response 오류
      */

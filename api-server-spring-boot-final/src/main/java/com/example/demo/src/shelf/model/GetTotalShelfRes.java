@@ -10,12 +10,10 @@ import java.util.Map;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetShelfRes {
-    private String title;
-    private GetShelfRes books;
+public class GetTotalShelfRes {
+    private int bookCnt;
+    private List<Map<String, Object>> books;
 
-    public GetShelfBooksRes() {
-        this.title = title;
-        this.books = books;
+    public GetTotalShelfRes() {
     }
 }

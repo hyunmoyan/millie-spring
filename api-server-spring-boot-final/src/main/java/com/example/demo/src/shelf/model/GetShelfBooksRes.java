@@ -1,4 +1,4 @@
-package com.example.demo.src.collection.model;
+package com.example.demo.src.shelf.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,8 +16,4 @@ public class GetShelfBooksRes {
     private String author;
     private String file;
     private String image;
-
-    public GetShelfBooksRes() {
-        
-    }
 }
