@@ -1,6 +1,7 @@
 package com.example.demo.src.shelf;
 
 import com.example.demo.src.shelf.model.GetTotalShelfRes;
+import com.example.demo.src.shelf.model.PostShelfReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -45,5 +46,11 @@ public class ShelfDao {
                 "                     where history_books.user_id = 3;", int.class));
         getTotalShelfRes.setBooks(this.jdbcTemplate.queryForList(query));
         return getTotalShelfRes;
+    }
+
+    public int createShelf(PostShelfReq postShelfReq){
+        this.jdbcTemplate.update("insert into shelf (name, user_id) values (?,?);",
+                new Object[]{postShelfReq.getName(), postShelfReq.getUserId()});
+        return this.jdbcTemplate.queryForObject("select last_insert_id()", int.class);
     }
 }

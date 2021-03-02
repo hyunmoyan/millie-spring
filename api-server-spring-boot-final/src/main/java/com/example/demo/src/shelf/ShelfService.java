@@ -1,5 +1,8 @@
 package com.example.demo.src.shelf;
 
+import com.example.demo.config.BaseException;
+import com.example.demo.src.shelf.model.PostShelfReq;
+import com.example.demo.src.shelf.model.PostShelfRes;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,5 +29,10 @@ public class ShelfService {
         this.shelfDao = shelfDao;
         this.shelfProvider = shelfProvider;
         this.jwtService = jwtService;
+    }
+
+    public PostShelfRes createShelf(PostShelfReq postShelfReq) throws BaseException {
+        int shelfId = shelfDao.createShelf(postShelfReq);
+        return new PostShelfRes(shelfId);
     }
 }

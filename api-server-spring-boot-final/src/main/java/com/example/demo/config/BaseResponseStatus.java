@@ -36,7 +36,7 @@ public enum BaseResponseStatus {
 
     // /shelfs
     GET_SHELFS_INVAILD_NUMBER(false, 2030, "shelf: 유효하지 않은 번호입니다."),
-
+    POST_SHELFS_EMPTY(false, 2031, "shelf: "),
     /**
      * 3000 : Response 오류
      */
