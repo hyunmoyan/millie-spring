@@ -13,7 +13,6 @@ import java.util.Map;
 public class GetTotalShelfRes {
     private int bookCnt;
     private List<Map<String, Object>> books;
-
     public GetTotalShelfRes() {
     }
 }

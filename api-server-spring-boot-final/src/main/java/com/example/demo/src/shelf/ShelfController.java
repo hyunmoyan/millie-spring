@@ -33,15 +33,28 @@ public class ShelfController {
 
     @ResponseBody
     @GetMapping("/home")
-    public BaseResponse<GetTotalShelfRes> getShelfBooks(@RequestParam(required = false, defaultValue = "1") String sequence){
+    public BaseResponse<GetTotalShelfRes> getShelfsBooks(@RequestParam(required = false, defaultValue = "1") String sequence){
         int Intsequence = Integer.parseInt(sequence);
         if(Intsequence >= 7|| 1 > Intsequence){
             return new BaseResponse<>(GET_SHELFS_INVAILD_NUMBER);
         }
 
-        GetTotalShelfRes getShelfBooksResList = shelfProvider.GetShelfBookList(Intsequence);
-        return new BaseResponse<>(getShelfBooksResList);
+        GetTotalShelfRes getTotalShelfRes = shelfProvider.GetShelfsBookList(Intsequence);
+        return new BaseResponse<>(getTotalShelfRes);
     }
+
+    @ResponseBody
+    @GetMapping("/{shelfId}")
+    public BaseResponse<GetShelfBooksRes> getShelfBooks(@PathVariable("shelfId") int shelfIdx) throws BaseException{
+        try {
+            GetShelfBooksRes getShelfBooksRes = shelfProvider.getShelfBooks(shelfIdx);
+            return new BaseResponse<>(getShelfBooksRes);
+        }
+        catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 
     @ResponseBody
     @PostMapping("")

@@ -11,9 +11,10 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 public class GetShelfBooksRes {
-    private int bookId;
-    private String title;
-    private String author;
-    private String file;
-    private String image;
+    private String shfName;
+    private List<Map<String, Object>> books;
+
+    public GetShelfBooksRes() {
+
+    }
 }

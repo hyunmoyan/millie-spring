@@ -1,5 +1,8 @@
 package com.example.demo.src.shelf;
 
+import com.example.demo.config.BaseException;
+import com.example.demo.config.BaseResponseStatus;
+import com.example.demo.src.shelf.model.GetShelfBooksRes;
 import com.example.demo.src.shelf.model.GetTotalShelfRes;
 import com.example.demo.src.shelf.model.PostShfBookReq;
 import com.example.demo.utils.JwtService;
@@ -10,6 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+
+import static com.example.demo.config.BaseResponseStatus.GET_SHELF_INVALID_ID;
 
 @Service
 public class ShelfProvider {
@@ -30,9 +35,17 @@ public class ShelfProvider {
         this.jwtService = jwtService;
     }
 
-    public GetTotalShelfRes GetShelfBookList(int sequence) {
-        GetTotalShelfRes getTotalShelfRes =  shelfDao.GetTotalShelf(sequence);
+    public GetTotalShelfRes GetShelfsBookList(int sequence) {
+        GetTotalShelfRes getTotalShelfRes =  shelfDao.getTotalShelf(sequence);
         return getTotalShelfRes;
+    }
+
+    public GetShelfBooksRes getShelfBooks(int shelfId) throws BaseException{
+        if(shelfDao.checkShfId(shelfId) == 0){
+            throw new BaseException(BaseResponseStatus.POST_BOOKS_EXITS_TITLE);
+        }
+        GetShelfBooksRes getShelfBooksRes = shelfDao.getShelfBooks(shelfId);
+        return getShelfBooksRes;
     }
 
     public int checkShfBook(PostShfBookReq postShfBookReq) {

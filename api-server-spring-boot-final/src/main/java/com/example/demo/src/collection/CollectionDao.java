@@ -21,7 +21,7 @@ public class CollectionDao {
     }
 
     public List<GetCollectionRes> getCollections(){
-        List<GetCollectionRes> getCollectionsRes =new ArrayList<>();
+        List<GetCollectionRes> getCollectionsRes = new ArrayList<>();
         int cnt = this.jdbcTemplate.queryForObject("select count(*) from collection;", Integer.class).intValue();
         for(int i = 1; i < cnt+1 ; i++) {
             GetCollectionRes getCollectionRes = new GetCollectionRes();
