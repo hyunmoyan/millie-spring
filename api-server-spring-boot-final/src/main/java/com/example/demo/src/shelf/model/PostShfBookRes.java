@@ -1,2 +1,12 @@
-package com.example.demo.src.shelf.model;public class PostBookRes {
+package com.example.demo.src.shelf.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+public class PostShfBookRes {
+    private String message;
 }

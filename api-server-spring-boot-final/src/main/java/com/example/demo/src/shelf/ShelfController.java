@@ -2,9 +2,8 @@ package com.example.demo.src.shelf;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.src.book.model.PostBookRes;
-import com.example.demo.src.shelf.model.PostShelfRes;
-import com.example.demo.src.shelf.model.GetTotalShelfRes;
-import com.example.demo.src.shelf.model.PostShelfReq;
+import com.example.demo.src.shelf.model.*;
+import com.example.demo.src.user.model.PostUserRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseResponse;
@@ -54,6 +53,34 @@ public class ShelfController {
             PostShelfRes postShelfRes = shelfService.createShelf(postShelfReq);
             return new BaseResponse<>(postShelfRes);
         } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/books")
+    public BaseResponse<PostShfBookRes> PostShfBook(@RequestBody PostShfBookReq postShfBookReq) throws BaseException {
+        if (postShfBookReq.getShelfId() == 0 || postShfBookReq.getBookId() == 0){
+            return new BaseResponse(SHELFS_ID_EMPTY);
+        }
+        try{
+            PostShfBookRes postShfBookRes = shelfService.createShfBook(postShfBookReq);
+            return new BaseResponse<>(postShfBookRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @PatchMapping("/books")
+    public BaseResponse<PostShfBookRes> PatchShfBook(@RequestBody PostShfBookReq postShfBookReq) throws BaseException {
+        if (postShfBookReq.getShelfId() == 0 || postShfBookReq.getBookId() == 0){
+            return new BaseResponse(SHELFS_ID_EMPTY);
+        }
+        try{
+            PostShfBookRes postShfBookRes = shelfService.deleteShfBook(postShfBookReq);
+            return new BaseResponse<>(postShfBookRes);
+        } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
     }

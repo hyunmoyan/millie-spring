@@ -1,6 +1,7 @@
 package com.example.demo.src.shelf;
 
 import com.example.demo.src.shelf.model.GetTotalShelfRes;
+import com.example.demo.src.shelf.model.PostShfBookReq;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,9 @@ public class ShelfProvider {
         return getTotalShelfRes;
     }
 
+    public int checkShfBook(PostShfBookReq postShfBookReq) {
+        return shelfDao.checkShfBook(postShfBookReq);
+    }
 }
 
 

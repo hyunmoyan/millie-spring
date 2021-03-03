@@ -2,6 +2,7 @@ package com.example.demo.src.shelf;
 
 import com.example.demo.src.shelf.model.GetTotalShelfRes;
 import com.example.demo.src.shelf.model.PostShelfReq;
+import com.example.demo.src.shelf.model.PostShfBookReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -52,5 +53,33 @@ public class ShelfDao {
         this.jdbcTemplate.update("insert into shelf (name, user_id) values (?,?);",
                 new Object[]{postShelfReq.getName(), postShelfReq.getUserId()});
         return this.jdbcTemplate.queryForObject("select last_insert_id()", int.class);
+    }
+
+    public String createShfBook(PostShfBookReq postShfBookReq, int status){
+        switch (status){
+            // 이미 테이블에 존재할 때
+            case 0 : this.jdbcTemplate.update("insert into shelf_books (shelf_id, book_id) values (?,?);",
+                    new Object[]{postShfBookReq.getShelfId(), postShfBookReq.getBookId()});
+                break;
+                // 테이블에 존재하지 않을
+            case 1 : this.jdbcTemplate.update("update shelf_books set status='Y' where book_id = ? and shelf_id = ?;",
+                    new Object[]{postShfBookReq.getBookId(), postShfBookReq.getShelfId()});
+                break;
+        }
+        return "추가 되었습니다.";
+    }
+    public String deleteShfBook(PostShfBookReq postShfBookReq){
+        this.jdbcTemplate.update("update shelf_books set status='N' where book_id = ? and shelf_id = ?;"
+            , postShfBookReq.getBookId(), postShfBookReq.getShelfId());
+        return "삭제 되었습니다.";
+    }
+
+    public int checkShfBook(PostShfBookReq postShfBookReq){
+        if (this.jdbcTemplate.queryForObject("select exists(select book_id from shelf_books where book_id = ? " +
+                "and shelf_id = ? and status= 'Y');", int.class, postShfBookReq.getBookId(), postShfBookReq.getShelfId()) == 1){
+            return 2;
+        }
+        return this.jdbcTemplate.queryForObject("select exists(select book_id from shelf_books where book_id = ? " +
+                "and shelf_id = ? and status= 'N');", int.class, postShfBookReq.getBookId(), postShfBookReq.getShelfId());
     }
 }
