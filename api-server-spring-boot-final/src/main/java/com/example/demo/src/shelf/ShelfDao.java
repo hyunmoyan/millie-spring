@@ -51,9 +51,11 @@ public class ShelfDao {
     }
 
     public GetShelfBooksRes getShelfBooks(int shelfId) {
-        String query = "select count(*) as book_cnt, shelf.name as name, shelf_books.book_id as book_id, title, author, image, concat(percentage, \"%\") as percent, if(datediff(now(), shelf_books.created_at) > 30, '만료', datediff(now(), shelf_books.created_at)) as exist_day" +
-                " from history_books join book on book.id = history_books.book_id join shelf_books on book.id = shelf_books.book_id join shelf on shelf_books.shelf_id = shelf.id" +
-                " where shelf_books.shelf_id = ? and history_books.user_id = 1;";
+        String query = "select count(shelf_books.book_id) as book_cnt, shelf.name as name, shelf_books.book_id as book_id, title, author, image, concat(percentage, \"%\") as percent,\n" +
+                "       if(datediff(now(), shelf_books.created_at) > 30, '만료', datediff(now(), shelf_books.created_at)) as exist_day\n" +
+                "from shelf_books\n" +
+                "left join history_books on shelf_books.id = history_books.book_id join book on book.id = shelf_books.book_id  join shelf on shelf_books.shelf_id = shelf.id\n" +
+                "    where shelf_books.shelf_id = ? and history_books.user_id = 1;";
         GetShelfBooksRes getShelfBooksRes = new GetShelfBooksRes();
         getShelfBooksRes.setShfName(this.jdbcTemplate.queryForObject("select name from shelf where shelf.id = ?;", String.class,shelfId));
         getShelfBooksRes.setBooks(this.jdbcTemplate.queryForList(query, shelfId));
