@@ -38,6 +38,7 @@ public class CollectionDao {
         getCollectionRes.setBooks(this.jdbcTemplate.queryForList("select collection.id as collection_id, book.id as book_id, book.title as title, author, image from book join collection_books on book.id = collection_books.book_id\n" +
                 "inner join collection on collection_books.collection_id = collection.id where collection.id = ?;", collectionId));
         getCollectionRes.setTitle(this.jdbcTemplate.queryForObject("select title from collection where collection.id = ?;", String.class, collectionId));
+        getCollectionRes.setBookCnt(getCollectionRes.getBooks().toArray().length);
         return getCollectionRes;
     }
 }

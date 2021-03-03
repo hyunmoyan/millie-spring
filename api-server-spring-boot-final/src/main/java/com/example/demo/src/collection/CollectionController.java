@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.demo.config.BaseResponseStatus.COLLECTION_SUCCESS;
+
 @RestController
 @RequestMapping("/collections")
 public class CollectionController {

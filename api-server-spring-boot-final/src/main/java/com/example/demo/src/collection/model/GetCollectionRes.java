@@ -12,6 +12,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class GetCollectionRes {
     private String title;
+    private int bookCnt;
     private List<Map<String, Object>> books;
 
     public GetCollectionRes() {

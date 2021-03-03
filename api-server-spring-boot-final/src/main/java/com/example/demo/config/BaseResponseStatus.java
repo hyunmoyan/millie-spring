@@ -11,7 +11,7 @@ public enum BaseResponseStatus {
      * 1000 : 요청 성공
      */
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
-
+    COLLECTION_SUCCESS(true, 1001, "컬렉션을 가져오는데 성공했습니다."),
 
     /**
      * 2000 : Request 오류
