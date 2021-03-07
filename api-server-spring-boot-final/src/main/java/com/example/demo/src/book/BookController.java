@@ -38,9 +38,22 @@ public class BookController {
     @ResponseBody
     @GetMapping("")
     public BaseResponse<List<GetBookRes>> getBooks(@RequestParam(required = false) String category) {
-        // Get Users
+        if(Integer.parseInt(category) > 18|| 0 > Integer.parseInt(category)){
+            return new BaseResponse<>(POST_BOOKS_INVALID_NUMBER);
+        }
         List<GetBookRes> getBooksRes = bookProvider.getBooks(category);
         return new BaseResponse<>(getBooksRes);
+    }
+
+    @ResponseBody
+    @GetMapping("{bookId}")
+    public BaseResponse<GetBookInfoRes> getBook(@PathVariable int bookId) throws BaseException {
+        try {
+            GetBookInfoRes getBookInfoRes = bookProvider.getBookInfo(bookId);
+            return new BaseResponse<>(getBookInfoRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
     }
 
     @ResponseBody
@@ -50,7 +63,7 @@ public class BookController {
             return new BaseResponse<>(POST_BOOKS_EMPTY_TITLE);
         }
         if(postBookReq.getCategory() >18|| 0 > postBookReq.getCategory()){
-            return new BaseResponse<>(POST_BOOKS_INVAILD_CATEGORY);
+            return new BaseResponse<>(POST_BOOKS_INVALID_NUMBER);
         }
         try {
             PostBookRes postBookRes = bookService.createBook(postBookReq);
@@ -59,5 +72,4 @@ public class BookController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
-
 }

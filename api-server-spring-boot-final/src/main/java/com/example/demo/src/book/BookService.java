@@ -3,7 +3,6 @@ package com.example.demo.src.book;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponseStatus;
 import com.example.demo.src.book.model.*;
-import com.example.demo.src.user.model.PostUserRes;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +43,6 @@ public class BookService {
         }
 
         int bookId = bookDao.createBook(postBookReq);
-
         String jwt = jwtService.createJwt(bookId);
         return new PostBookRes(bookId);
     }

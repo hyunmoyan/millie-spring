@@ -10,10 +10,10 @@ import java.util.Map;
 @Getter
 @Setter
 @AllArgsConstructor
-
 public class GetCollectionRes {
     private String title;
-    private List<Map<String, Object>> list;
+    private int bookCnt;
+    private List<Map<String, Object>> books;
 
     public GetCollectionRes() {
     }

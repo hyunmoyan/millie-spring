@@ -1,6 +1,7 @@
 .gradle
 /build/
 !gradle/wrapper/gradle-wrapper.jar
+/api-server-spring-boot-final/.gradle
 
 ### STS ###
 .apt_generated
@@ -24,3 +25,5 @@ dist/
 nbdist/
 .nb-gradle/
 .idea/
+.gradle/
+logs/

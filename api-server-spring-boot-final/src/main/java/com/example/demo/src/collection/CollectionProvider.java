@@ -32,8 +32,8 @@ public class CollectionProvider {
         this.jwtService = jwtService;
     }
 
-    public List<GetCollectionRes> getCollections(){
-        List<GetCollectionRes> getCollectionsRes = collectionDao.getCollections();
+    public List<GetCollectionsRes> getCollections(){
+        List<GetCollectionsRes> getCollectionsRes = collectionDao.getCollections();
         return getCollectionsRes;
     }
     public GetCollectionRes getCollection(int collectionId){

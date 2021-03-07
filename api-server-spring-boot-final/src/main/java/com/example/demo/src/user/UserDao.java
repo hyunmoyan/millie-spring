@@ -19,14 +19,30 @@ public class UserDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<GetUserRes> getUsers(){
-        return this.jdbcTemplate.query("select * from user",
-                (rs, rowNum) -> new GetUserRes(
-                        rs.getInt("id"),
+    public List<GetUserInfoRes> getUsers(int userIdx){
+        String query = "select nickname, follower_cnt, following_cnt, datediff(now(), created_at) as day_cnt, point\n" +
+                "from user\n" +
+                "         inner join (select user_id as id, ifnull(count(user_id), 0) as point\n" +
+                "                     from history_log\n" +
+                "                     group by user_id) point_tb on user.id = point_tb.id\n" +
+                "         inner join\n" +
+                "     (select follower.id as id, follower_cnt, following_cnt\n" +
+                "      from (select user.id as id, ifnull(count(follower_id), 0) as follower_cnt\n" +
+                "            from follow\n" +
+                "                     right join user on user.id = follower_id\n" +
+                "            group by id) follower\n" +
+                "               inner join (select user.id as id, ifnull(count(following_id), 0) as following_cnt\n" +
+                "                           from follow\n" +
+                "                                    right join user on user.id = following_id\n" +
+                "                           group by id) following on following.id = follower.id) follow_tb on follow_tb.id = user.id\n" +
+                "where user.id = ?;";
+        return this.jdbcTemplate.query(query,
+                (rs, rowNum) -> new GetUserInfoRes(
                         rs.getString("nickname"),
-                        rs.getString("user"),
-                        rs.getString("status"),
-                        rs.getString("password"))
+                        rs.getInt("follower_cnt"),
+                        rs.getInt("following_cnt"),
+                        rs.getInt("day_cnt"),
+                        rs.getInt("point")), userIdx
                 );
     }
 
@@ -43,8 +59,8 @@ public class UserDao {
 
 
     public int createUser(PostUserReq postUserReq){
-        this.jdbcTemplate.update("insert into UserInfo (userName, ID, password, email) VALUES (?,?,?,?)",
-                new Object[]{postUserReq.getUserName(), postUserReq.getId(), postUserReq.getPassword(), postUserReq.getEmail(),}
+        this.jdbcTemplate.update("insert into user (nickname, user, password, phone_num) VALUES (?,?,?,?)",
+                new Object[]{postUserReq.getUserName(), postUserReq.getId(), postUserReq.getPassword(), postUserReq.getPhoneNum()}
         );
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
@@ -56,6 +72,20 @@ public class UserDao {
 
     }
 
+    public User getPwd(PostLoginReq postLoginReq){
+        String getPwdQuery = "select id, password, nickname, user from user where user = ?";
+        String getPwdParams = postLoginReq.getId();
 
+        return this.jdbcTemplate.queryForObject(getPwdQuery,
+                (rs,rowNum)-> new User(
+                        rs.getInt("id"),
+                        rs.getString("nickname"),
+                        rs.getString("user"),
+                        rs.getString("password")
+                ),
+                getPwdParams
+        );
+
+    }
 
 }

@@ -11,7 +11,7 @@ public enum BaseResponseStatus {
      * 1000 : 요청 성공
      */
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
-
+    COLLECTION_SUCCESS(true, 1001, "컬렉션을 가져오는데 성공했습니다."),
 
     /**
      * 2000 : Request 오류
@@ -31,8 +31,22 @@ public enum BaseResponseStatus {
 
     // [POST] /books
     POST_BOOKS_EMPTY_TITLE(false, 2020, "책 제목 혹은 작가 비었습니다."),
-    POST_BOOKS_INVAILD_CATEGORY(false, 2021, "유효하지 않은 카테고리 번호입니다."),
+    POST_BOOKS_INVALID_NUMBER(false, 2021, "유효하지 않은 번호입니다."),
     POST_BOOKS_EXITS_TITLE(false, 2022, "이미 있는 책입니다."),
+
+    // /shelfs
+    GET_SHELFS_INVAILD_NUMBER(false, 2030, "shelf: 유효하지 않은 번호입니다."),
+    POST_SHELFS_EMPTY(false, 2031, "shelf: 제목이 비었습니다."),
+    SHELFS_ID_EMPTY(false, 2032, "shelf: 아이디 값을 확해주세요."),
+    POST_CHELFS_EXISTS(false, 2033, "책이 책장에 이미 존재합니다."),
+    PATCH_SHELFS_ALREADY_DELETED(false, 2040, "shelf: 책장에 책이 존재하지 않습니다"),
+    GET_SHELF_INVALID_ID(false, 2034, "shelf: 존재하지 않는 책장입니다."),
+    POST_SHELFS_INVAILD_USER(false, 2035, "유저가 가진 책장이 아닙니다."),
+
+
+    //posts
+    POST_EMPTY_TITLE(false, 2100, "포스트 제목이 비었습니다."),
+    POST_EMPTY_CONTENT(false, 2101, "포스트 내용이 비었습니다."),
     /**
      * 3000 : Response 오류
      */
@@ -41,7 +55,7 @@ public enum BaseResponseStatus {
 
     // [POST] /users
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
-
+    FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
 
     /**
      * 4000 : Database, Server 오류

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.demo.config.BaseResponseStatus.COLLECTION_SUCCESS;
+
 @RestController
 @RequestMapping("/collections")
 public class CollectionController {
@@ -34,9 +36,9 @@ public class CollectionController {
 
     @ResponseBody
     @GetMapping("") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetCollectionRes>> getCollections() {
+    public BaseResponse<List<GetCollectionsRes>> getCollections() {
         // Get Users
-        List<GetCollectionRes> getCollectionsRes = collectionProvider.getCollections();
+        List<GetCollectionsRes> getCollectionsRes = collectionProvider.getCollections();
         return new BaseResponse<>(getCollectionsRes);
     }
 

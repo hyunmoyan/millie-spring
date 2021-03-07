@@ -50,10 +50,10 @@ public class UserController {
     //Query String
     @ResponseBody
     @GetMapping("") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetUserRes>> getUsers() {
+    public BaseResponse<List<GetUserInfoRes>> getUsers() throws BaseException {
         // Get Users
-        List<GetUserRes> getUsersRes = userProvider.getUsers();
-        return new BaseResponse<>(getUsersRes);
+        List<GetUserInfoRes> getUserInfoRes = userProvider.getUsers();
+        return new BaseResponse<>(getUserInfoRes);
     }
 
     /**
@@ -78,19 +78,28 @@ public class UserController {
     // Body
     @ResponseBody
     @PostMapping("")
-    public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) throws BaseException {
-        if(postUserReq.getEmail() == null){
-            return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
-        }
-        //이메일 정규표현
-        if(!isRegexEmail(postUserReq.getEmail())){
-            return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
+    public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq){
+        if(postUserReq.getUserName().length() == 0|| postUserReq.getPassword().length() ==0){
+            return new BaseResponse<>(USERS_EMPTY_USER_ID);
         }
         try{
             PostUserRes postUserRes = userService.createUser(postUserReq);
             return new BaseResponse<>(postUserRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/login")
+    public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq){
+        try{
+            // TODO: 로그인 값들에 대한 형식적인 validatin 처리해주셔야합니다!
+            // TODO: 유저의 status ex) 비활성화된 유저, 탈퇴한 유저 등을 관리해주고 있다면 해당 부분에 대한 validation 처리도 해주셔야합니다.
+            PostLoginRes postLoginRes = userProvider.logIn(postLoginReq);
+            return new BaseResponse<>(postLoginRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
         }
     }
 }
