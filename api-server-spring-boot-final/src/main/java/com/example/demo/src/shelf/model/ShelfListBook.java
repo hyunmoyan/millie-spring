@@ -11,6 +11,7 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 public class ShelfListBook {
+    private int shelfId;
     private String slfTitle;
     private int bookCnt;
     private List<String> images;

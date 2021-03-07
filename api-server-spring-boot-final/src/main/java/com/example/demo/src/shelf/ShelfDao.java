@@ -25,6 +25,7 @@ public class ShelfDao {
 
         for(int i=0; i < shelf.size(); i++){
             ShelfListBook shelfListBook = new ShelfListBook();
+            shelfListBook.setShelfId(this.jdbcTemplate.queryForObject("select id from shelf where shelf.id = ?", int.class ,shelf.get(i)));
             shelfListBook.setSlfTitle(this.jdbcTemplate.queryForObject("select name from shelf where shelf.id = ?", String.class ,shelf.get(i)));
             shelfListBook.setBookCnt(this.jdbcTemplate.queryForObject("select count(*) from shelf_books where shelf_id= ?", int.class, shelf.get(i)));
             shelfListBook.setImages(this.jdbcTemplate.queryForList("select image from shelf_books join book on shelf_books.book_id = book.id where shelf_books.shelf_id = ? limit 5"

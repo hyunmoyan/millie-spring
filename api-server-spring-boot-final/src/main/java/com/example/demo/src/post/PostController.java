@@ -44,6 +44,11 @@ public class PostController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+    @ResponseBody
+    @GetMapping("/{postId}")
+    public BaseResponse<>
+
     //[POST] 포스트 post API
     @ResponseBody
     @PostMapping("")
