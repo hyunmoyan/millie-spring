@@ -42,6 +42,11 @@ public enum BaseResponseStatus {
     PATCH_SHELFS_ALREADY_DELETED(false, 2040, "shelf: 책장에 책이 존재하지 않습니다"),
     GET_SHELF_INVALID_ID(false, 2034, "shelf: 존재하지 않는 책장입니다."),
     POST_SHELFS_INVAILD_USER(false, 2035, "유저가 가진 책장이 아닙니다."),
+
+
+    //posts
+    POST_EMPTY_TITLE(false, 2100, "포스트 제목이 비었습니다."),
+    POST_EMPTY_CONTENT(false, 2101, "포스트 내용이 비었습니다."),
     /**
      * 3000 : Response 오류
      */

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.INVALID_JWT;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @RestController
 @RequestMapping("/posts")
@@ -48,6 +48,12 @@ public class PostController {
     @ResponseBody
     @PostMapping("")
     public BaseResponse<PostPstRes> PostPst(@RequestBody PostPstReq postPstReq) {
+        if (postPstReq.getTitle().length() == 0| postPstReq.getTitle() == ""){
+            return new BaseResponse<>(POST_EMPTY_TITLE);
+        }
+        if (postPstReq.getContent().length() == 0 | postPstReq.getContent() == ""){
+            return new BaseResponse<>(POST_EMPTY_CONTENT);
+        }
         try {
             PostPstRes postPstRes = postService.PostPst(postPstReq);
             return new BaseResponse<>(postPstRes);
