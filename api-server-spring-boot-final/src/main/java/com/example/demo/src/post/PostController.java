@@ -34,6 +34,16 @@ public class PostController {
         this.jwtService = jwtService;
     }
 
+    @ResponseBody
+    @GetMapping("")
+    public BaseResponse<GetPstRes> GetPostList() {
+        try{
+            GetPstRes getPstRes = postProvider.getPostList();
+            return new BaseResponse<>(getPstRes);
+        }catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
     //[POST] 포스트 post API
     @ResponseBody
     @PostMapping("")

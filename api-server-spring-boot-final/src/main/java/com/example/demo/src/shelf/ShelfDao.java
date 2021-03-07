@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ShelfDao {
@@ -19,11 +20,18 @@ public class ShelfDao {
 
     public GetShelfListRes getShelfList(int userIdxByJwt) {
         List<ShelfListBook> shelfList = new ArrayList<>();
-        ShelfListBook shelfListBook = new ShelfListBook();
-        shelfListBook.setSlfTitle("hi");
-        shelfListBook.setBookCnt(2);
-        shelfListBook.setImages(new String[]{"http"});
-        shelfList.add(shelfListBook);
+        List<Integer> shelf = this.jdbcTemplate.queryForList("select id from shelf where shelf.user_id = ?"
+                    , int.class, userIdxByJwt);
+
+        for(int i=0; i < shelf.size(); i++){
+            ShelfListBook shelfListBook = new ShelfListBook();
+            shelfListBook.setSlfTitle(this.jdbcTemplate.queryForObject("select name from shelf where shelf.id = ?", String.class ,shelf.get(i)));
+            shelfListBook.setBookCnt(this.jdbcTemplate.queryForObject("select count(*) from shelf_books where shelf_id= ?", int.class, shelf.get(i)));
+            shelfListBook.setImages(this.jdbcTemplate.queryForList("select image from shelf_books join book on shelf_books.book_id = book.id where shelf_books.shelf_id = ? limit 5"
+                                    , String.class ,shelf.get(i)));
+            shelfList.add(shelfListBook);
+        }
+
 
         GetShelfListRes getShelfListRes = new GetShelfListRes();
         getShelfListRes.setShelfCnt(3);
