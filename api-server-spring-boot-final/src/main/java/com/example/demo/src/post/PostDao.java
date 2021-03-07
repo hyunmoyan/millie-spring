@@ -30,6 +30,7 @@ public class PostDao {
                         "     on likes.post_id = post.id where user_id = ? " +
                         "order by created_at desc",
                 (rs, rowNum) -> new PostBrief(
+                        rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("content"),
                         rs.getString("image"),

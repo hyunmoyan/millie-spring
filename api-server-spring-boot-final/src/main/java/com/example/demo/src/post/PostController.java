@@ -45,9 +45,9 @@ public class PostController {
         }
     }
 
-    @ResponseBody
-    @GetMapping("/{postId}")
-    public BaseResponse<>
+    //@ResponseBody
+    //@GetMapping("/{postId}")
+    //public BaseResponse<>
 
     //[POST] 포스트 post API
     @ResponseBody
