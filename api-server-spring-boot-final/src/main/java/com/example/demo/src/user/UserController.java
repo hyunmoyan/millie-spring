@@ -50,10 +50,10 @@ public class UserController {
     //Query String
     @ResponseBody
     @GetMapping("") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetUserRes>> getUsers() {
+    public BaseResponse<List<GetUserInfoRes>> getUsers() throws BaseException {
         // Get Users
-        List<GetUserRes> getUsersRes = userProvider.getUsers();
-        return new BaseResponse<>(getUsersRes);
+        List<GetUserInfoRes> getUserInfoRes = userProvider.getUsers();
+        return new BaseResponse<>(getUserInfoRes);
     }
 
     /**

@@ -40,9 +40,10 @@ public class UserProvider {
         this.jwtService = jwtService;
     }
 
-    public List<GetUserRes> getUsers(){
-        List<GetUserRes> getUsersRes = userDao.getUsers();
-        return getUsersRes;
+    public List<GetUserInfoRes> getUsers() throws BaseException {
+        int userIdx = jwtService.getUserIdx();
+        List<GetUserInfoRes> getUserInfosRes = userDao.getUsers(userIdx);
+        return getUserInfosRes;
     }
 
 
