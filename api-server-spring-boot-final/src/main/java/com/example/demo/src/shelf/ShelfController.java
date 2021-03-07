@@ -33,7 +33,7 @@ public class ShelfController {
     }
 
     @ResponseBody
-    @GetMapping("/home")
+    @GetMapping("/books")
     public BaseResponse<GetTotalShelfRes> getShelfsBooks(@RequestParam(required = false, defaultValue = "1") String sequence) throws BaseException {
         int Intsequence = Integer.parseInt(sequence);
         if(Intsequence >= 7|| 1 > Intsequence){
