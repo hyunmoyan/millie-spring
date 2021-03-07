@@ -79,6 +79,9 @@ public class UserController {
     @ResponseBody
     @PostMapping("")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq){
+        if(postUserReq.getUserName().length() == 0|| postUserReq.getPassword().length() ==0){
+            return new BaseResponse<>(USERS_EMPTY_USER_ID);
+        }
         try{
             PostUserRes postUserRes = userService.createUser(postUserReq);
             return new BaseResponse<>(postUserRes);
@@ -88,7 +91,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @PostMapping("/logIn")
+    @PostMapping("/login")
     public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq){
         try{
             // TODO: 로그인 값들에 대한 형식적인 validatin 처리해주셔야합니다!
