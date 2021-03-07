@@ -41,6 +41,7 @@ public enum BaseResponseStatus {
     POST_CHELFS_EXISTS(false, 2033, "책이 책장에 이미 존재합니다."),
     PATCH_SHELFS_ALREADY_DELETED(false, 2040, "shelf: 책장에 책이 존재하지 않습니다"),
     GET_SHELF_INVALID_ID(false, 2034, "shelf: 존재하지 않는 책장입니다."),
+    POST_SHELFS_INVAILD_USER(false, 2035, "유저가 가진 책장이 아닙니다."),
     /**
      * 3000 : Response 오류
      */
@@ -49,7 +50,7 @@ public enum BaseResponseStatus {
 
     // [POST] /users
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
-
+    FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
 
     /**
      * 4000 : Database, Server 오류

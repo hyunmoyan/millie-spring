@@ -43,8 +43,8 @@ public class UserDao {
 
 
     public int createUser(PostUserReq postUserReq){
-        this.jdbcTemplate.update("insert into UserInfo (userName, ID, password, email) VALUES (?,?,?,?)",
-                new Object[]{postUserReq.getUserName(), postUserReq.getId(), postUserReq.getPassword(), postUserReq.getEmail(),}
+        this.jdbcTemplate.update("insert into user (nickname, user, password, phone_num) VALUES (?,?,?,?)",
+                new Object[]{postUserReq.getUserName(), postUserReq.getId(), postUserReq.getPassword(), postUserReq.getPhoneNum()}
         );
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
@@ -56,6 +56,20 @@ public class UserDao {
 
     }
 
+    public User getPwd(PostLoginReq postLoginReq){
+        String getPwdQuery = "select id, password, nickname, user from user where user = ?";
+        String getPwdParams = postLoginReq.getId();
 
+        return this.jdbcTemplate.queryForObject(getPwdQuery,
+                (rs,rowNum)-> new User(
+                        rs.getInt("id"),
+                        rs.getString("nickname"),
+                        rs.getString("user"),
+                        rs.getString("password")
+                ),
+                getPwdParams
+        );
+
+    }
 
 }
