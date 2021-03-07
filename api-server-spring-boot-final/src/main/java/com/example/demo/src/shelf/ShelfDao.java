@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class ShelfDao {
@@ -14,6 +16,20 @@ public class ShelfDao {
 
     @Autowired
     public void setDataSource(DataSource dataSource) { this.jdbcTemplate = new JdbcTemplate(dataSource); }
+
+    public GetShelfListRes getShelfList(int userIdxByJwt) {
+        List<ShelfListBook> shelfList = new ArrayList<>();
+        ShelfListBook shelfListBook = new ShelfListBook();
+        shelfListBook.setSlfTitle("hi");
+        shelfListBook.setBookCnt(2);
+        shelfListBook.setImages(new String[]{"http"});
+        shelfList.add(shelfListBook);
+
+        GetShelfListRes getShelfListRes = new GetShelfListRes();
+        getShelfListRes.setShelfCnt(3);
+        getShelfListRes.setShelfList(shelfList);
+        return getShelfListRes;
+    }
 
     public GetTotalShelfRes getTotalShelf(int sequence, int userId) {
         String query ="select book.id as book_id, title, author, file, image\n" +

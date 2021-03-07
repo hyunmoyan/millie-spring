@@ -33,6 +33,18 @@ public class ShelfController {
     }
 
     @ResponseBody
+    @GetMapping("")
+    public BaseResponse<GetShelfListRes> getShelfList(){
+        try{
+            GetShelfListRes getShelfListRes = shelfProvider.getShelfList();
+            return new BaseResponse<>(getShelfListRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+
+    }
+
+    @ResponseBody
     @GetMapping("/books")
     public BaseResponse<GetTotalShelfRes> getShelfsBooks(@RequestParam(required = false, defaultValue = "1") String sequence) throws BaseException {
         int Intsequence = Integer.parseInt(sequence);

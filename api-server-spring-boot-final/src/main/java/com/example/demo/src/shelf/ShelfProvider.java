@@ -2,10 +2,7 @@ package com.example.demo.src.shelf;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponseStatus;
-import com.example.demo.src.shelf.model.GetShelfBooksRes;
-import com.example.demo.src.shelf.model.GetTotalShelfRes;
-import com.example.demo.src.shelf.model.PatchShelfReq;
-import com.example.demo.src.shelf.model.PostShfBookReq;
+import com.example.demo.src.shelf.model.*;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +31,12 @@ public class ShelfProvider {
     public ShelfProvider(ShelfDao shelfDao, JwtService jwtService){
         this.shelfDao = shelfDao;
         this.jwtService = jwtService;
+    }
+
+    public GetShelfListRes getShelfList() throws BaseException {
+        int userIdxByJwt = jwtService.getUserIdx();
+        GetShelfListRes getShelfListRes = shelfDao.getShelfList(userIdxByJwt);
+        return getShelfListRes;
     }
 
     public GetTotalShelfRes GetShelfsBookList(int sequence) throws BaseException {
