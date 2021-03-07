@@ -4,6 +4,7 @@ import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponseStatus;
 import com.example.demo.src.shelf.model.GetShelfBooksRes;
 import com.example.demo.src.shelf.model.GetTotalShelfRes;
+import com.example.demo.src.shelf.model.PatchShelfReq;
 import com.example.demo.src.shelf.model.PostShfBookReq;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -35,21 +36,31 @@ public class ShelfProvider {
         this.jwtService = jwtService;
     }
 
-    public GetTotalShelfRes GetShelfsBookList(int sequence) {
-        GetTotalShelfRes getTotalShelfRes =  shelfDao.getTotalShelf(sequence);
+    public GetTotalShelfRes GetShelfsBookList(int sequence) throws BaseException {
+        int userIdxByJwt = jwtService.getUserIdx();
+        GetTotalShelfRes getTotalShelfRes =  shelfDao.getTotalShelf(sequence, userIdxByJwt);
         return getTotalShelfRes;
     }
 
     public GetShelfBooksRes getShelfBooks(int shelfId) throws BaseException{
+        int userIdxByJwt = jwtService.getUserIdx();
         if(shelfDao.checkShfId(shelfId) == 0){
             throw new BaseException(BaseResponseStatus.POST_BOOKS_EXITS_TITLE);
         }
-        GetShelfBooksRes getShelfBooksRes = shelfDao.getShelfBooks(shelfId);
+        GetShelfBooksRes getShelfBooksRes = shelfDao.getShelfBooks(shelfId, userIdxByJwt);
         return getShelfBooksRes;
+    }
+
+    public int checkShfBook(PatchShelfReq postShfBookReq) {
+        return shelfDao.checkPtjBooh(postShfBookReq);
     }
 
     public int checkShfBook(PostShfBookReq postShfBookReq) {
         return shelfDao.checkShfBook(postShfBookReq);
+    }
+
+    public int checkUserShf(PostShfBookReq postShfBookReq, int userIdJwt) {
+        return shelfDao.checkUserShf(postShfBookReq, userIdJwt);
     }
 }
 

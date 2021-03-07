@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PostShfBookReq {
-    private int shelfId;
+public class PatchShelfReq {
     private int bookId[];
+    private int shelfId;
 }

@@ -33,12 +33,12 @@ public class ShelfController {
 
     @ResponseBody
     @GetMapping("/home")
-    public BaseResponse<GetTotalShelfRes> getShelfsBooks(@RequestParam(required = false, defaultValue = "1") String sequence){
+    public BaseResponse<GetTotalShelfRes> getShelfsBooks(@RequestParam(required = false, defaultValue = "1") String sequence) throws BaseException {
         int Intsequence = Integer.parseInt(sequence);
         if(Intsequence >= 7|| 1 > Intsequence){
             return new BaseResponse<>(GET_SHELFS_INVAILD_NUMBER);
         }
-
+        int userId = jwtService.getUserIdx();
         GetTotalShelfRes getTotalShelfRes = shelfProvider.GetShelfsBookList(Intsequence);
         return new BaseResponse<>(getTotalShelfRes);
     }
@@ -73,7 +73,8 @@ public class ShelfController {
     @ResponseBody
     @PostMapping("/books")
     public BaseResponse<PostShfBookRes> PostShfBook(@RequestBody PostShfBookReq postShfBookReq) throws BaseException {
-        if (postShfBookReq.getShelfId() == 0 || postShfBookReq.getBookId() == 0){
+
+        if (postShfBookReq.getShelfId() == 0 || postShfBookReq.getBookId().length == 0){
             return new BaseResponse(SHELFS_ID_EMPTY);
         }
         try{
@@ -86,8 +87,8 @@ public class ShelfController {
 
     @ResponseBody
     @PatchMapping("/books")
-    public BaseResponse<PostShfBookRes> PatchShfBook(@RequestBody PostShfBookReq postShfBookReq) throws BaseException {
-        if (postShfBookReq.getShelfId() == 0 || postShfBookReq.getBookId() == 0){
+    public BaseResponse<PostShfBookRes> PatchShfBook(@RequestBody PatchShelfReq postShfBookReq) throws BaseException {
+        if (postShfBookReq.getShelfId() == 0 || postShfBookReq.getBookId().length == 0){
             return new BaseResponse(SHELFS_ID_EMPTY);
         }
         try{

@@ -12,6 +12,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class GetShelfBooksRes {
     private String shfName;
+    private int bookCnt;
     private List<Map<String, Object>> books;
 
     public GetShelfBooksRes() {
