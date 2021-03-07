@@ -4,6 +4,7 @@ import com.example.demo.config.BaseException;
 import com.example.demo.src.book.model.PostBookRes;
 import com.example.demo.src.shelf.model.*;
 import com.example.demo.src.user.model.PostUserRes;
+import com.sun.tools.classfile.ConstantPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseResponse;
@@ -44,7 +45,7 @@ public class ShelfController {
     }
 
     @ResponseBody
-    @GetMapping("/{shelfId}")
+    @GetMapping("/{shelfId}/books")
     public BaseResponse<GetShelfBooksRes> getShelfBooks(@PathVariable("shelfId") int shelfIdx) throws BaseException{
         try {
             GetShelfBooksRes getShelfBooksRes = shelfProvider.getShelfBooks(shelfIdx);
@@ -71,9 +72,9 @@ public class ShelfController {
     }
 
     @ResponseBody
-    @PostMapping("/books")
-    public BaseResponse<PostShfBookRes> PostShfBook(@RequestBody PostShfBookReq postShfBookReq) throws BaseException {
-
+    @PostMapping("/{shelfId}/books")
+    public BaseResponse<PostShfBookRes> PostShfBook(@PathVariable("shelfId") int shelfId, @RequestBody PostShfBookReq postShfBookReq) throws BaseException {
+        postShfBookReq.setShelfId(shelfId);
         if (postShfBookReq.getShelfId() == 0 || postShfBookReq.getBookId().length == 0){
             return new BaseResponse(SHELFS_ID_EMPTY);
         }
@@ -86,8 +87,9 @@ public class ShelfController {
     }
 
     @ResponseBody
-    @PatchMapping("/books")
-    public BaseResponse<PostShfBookRes> PatchShfBook(@RequestBody PatchShelfReq postShfBookReq) throws BaseException {
+    @PatchMapping("/{shelfId}/books")
+    public BaseResponse<PostShfBookRes> PatchShfBook(@PathVariable("shelfId") int shelfId, @RequestBody PatchShelfReq postShfBookReq) throws BaseException {
+        postShfBookReq.setShelfId(shelfId);
         if (postShfBookReq.getShelfId() == 0 || postShfBookReq.getBookId().length == 0){
             return new BaseResponse(SHELFS_ID_EMPTY);
         }

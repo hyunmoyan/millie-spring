@@ -10,5 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PatchShelfReq {
     private int bookId[];
-    private int shelfId;
+    private int shelfId = 0;
 }
