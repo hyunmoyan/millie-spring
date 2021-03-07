@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class PostBrief {
+    private int postId;
     private String title;
     private String content;
     private String image;
