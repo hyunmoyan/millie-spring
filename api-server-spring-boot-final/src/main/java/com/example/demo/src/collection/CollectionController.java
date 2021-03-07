@@ -36,9 +36,9 @@ public class CollectionController {
 
     @ResponseBody
     @GetMapping("") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetCollectionRes>> getCollections() {
+    public BaseResponse<List<GetCollectionsRes>> getCollections() {
         // Get Users
-        List<GetCollectionRes> getCollectionsRes = collectionProvider.getCollections();
+        List<GetCollectionsRes> getCollectionsRes = collectionProvider.getCollections();
         return new BaseResponse<>(getCollectionsRes);
     }
 

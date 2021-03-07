@@ -2,6 +2,7 @@ package com.example.demo.src.collection;
 
 
 import com.example.demo.src.collection.model.GetCollectionRes;
+import com.example.demo.src.collection.model.GetCollectionsRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -20,14 +21,15 @@ public class CollectionDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<GetCollectionRes> getCollections(){
-        List<GetCollectionRes> getCollectionsRes = new ArrayList<>();
-        int cnt = this.jdbcTemplate.queryForObject("select count(*) from collection;", Integer.class).intValue();
-        for(int i = 1; i < cnt+1 ; i++) {
-            GetCollectionRes getCollectionRes = new GetCollectionRes();
-            getCollectionRes.setTitle(this.jdbcTemplate.queryForObject("select title from collection where collection.id = ?;", String.class, i));
+    public List<GetCollectionsRes> getCollections(){
+        List<GetCollectionsRes> getCollectionsRes = new ArrayList<>();
+        List<Integer> cnt = this.jdbcTemplate.queryForList("select id from collection where status='Y'", int.class);
+        System.out.println(cnt);
+        for(int i = 0; i < cnt.size() ; i++) {
+            GetCollectionsRes getCollectionRes = new GetCollectionsRes();
+            getCollectionRes.setTitle(this.jdbcTemplate.queryForObject("select title from collection where collection.id = ?;", String.class, cnt.get(i)));
             getCollectionRes.setBooks(this.jdbcTemplate.queryForList("select collection.id as collection_id, book.id as book_id, book.title as title, author, image from book join collection_books on book.id = collection_books.book_id\n" +
-                    "inner join collection on collection_books.collection_id = collection.id where collection.id = ?;", i));
+                    "inner join collection on collection_books.collection_id = collection.id where collection.id = ?;", cnt.get(i)));
             getCollectionsRes.add(getCollectionRes);
         }
         return getCollectionsRes;
