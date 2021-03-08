@@ -40,4 +40,8 @@ public class PostProvider {
         return getPstRes;
     }
 
+    public GetOnePstRes GetOnePost(int postId) {
+        GetOnePstRes getOnePstRes = postDao.GetOnePost(postId);
+        return getOnePstRes;
+    }
 }

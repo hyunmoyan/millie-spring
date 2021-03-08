@@ -14,5 +14,4 @@ public class PostBrief {
     private String image;
     private String date;
     private int likeCnt;
-
 }

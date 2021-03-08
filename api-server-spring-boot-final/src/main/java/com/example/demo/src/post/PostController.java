@@ -9,6 +9,7 @@ import com.example.demo.config.BaseResponse;
 import com.example.demo.src.post.model.*;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,9 +46,12 @@ public class PostController {
         }
     }
 
-    //@ResponseBody
-    //@GetMapping("/{postId}")
-    //public BaseResponse<>
+    @ResponseBody
+    @GetMapping("/{postId}")
+    public BaseResponse<GetOnePstRes> GetOnePost(@PathVariable("postId") int postId){
+        GetOnePstRes getOnePstRes = postProvider.GetOnePost(postId);
+        return new BaseResponse<>(getOnePstRes);
+    }
 
     //[POST] 포스트 post API
     @ResponseBody
@@ -55,6 +59,7 @@ public class PostController {
     public BaseResponse<PostPstRes> PostPst(@RequestBody PostPstReq postPstReq) {
         if (postPstReq.getTitle().length() == 0| postPstReq.getTitle() == ""){
             return new BaseResponse<>(POST_EMPTY_TITLE);
+
         }
         if (postPstReq.getContent().length() == 0 | postPstReq.getContent() == ""){
             return new BaseResponse<>(POST_EMPTY_CONTENT);
