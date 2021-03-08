@@ -45,7 +45,7 @@ public class PostController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
-
+// 상세 포스트 보기
     @ResponseBody
     @GetMapping("/{postId}")
     public BaseResponse<GetOnePstRes> GetOnePost(@PathVariable("postId") int postId){
