@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 
+import static com.example.demo.config.BaseResponseStatus.POST_NOT_EXIST;
+
 @Service
 public class PostProvider {
 
@@ -40,7 +42,10 @@ public class PostProvider {
         return getPstRes;
     }
 
-    public GetOnePstRes GetOnePost(int postId) {
+    public GetOnePstRes GetOnePost(int postId) throws BaseException {
+        if (postDao.checkPostId(postId) == 0){
+            throw new BaseException(POST_NOT_EXIST);
+        }
         GetOnePstRes getOnePstRes = postDao.GetOnePost(postId);
         return getOnePstRes;
     }

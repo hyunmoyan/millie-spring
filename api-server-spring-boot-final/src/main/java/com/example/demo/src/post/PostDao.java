@@ -27,7 +27,7 @@ public class PostDao {
                         "from post\n" +
                         "         left join\n" +
                         "     (select post_id, count(post_id) as likes_cnt from post_likes where value = 'Y' group by post_id) likes\n" +
-                        "     on likes.post_id = post.id where user_id = ? " +
+                        "     on likes.post_id = post.id where user_id = ? and status = 'Y'" +
                         "order by created_at desc",
                 (rs, rowNum) -> new PostBrief(
                         rs.getInt("post_id"),
@@ -65,5 +65,10 @@ public class PostDao {
                 , bookJwtId});
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
 
+    }
+
+    public int checkPostId(int postId){
+        String query = "select exists(select id from post where id = ? and status = 'Y')";
+        return this.jdbcTemplate.queryForObject(query, int.class, postId);
     }
 }

@@ -49,8 +49,13 @@ public class PostController {
     @ResponseBody
     @GetMapping("/{postId}")
     public BaseResponse<GetOnePstRes> GetOnePost(@PathVariable("postId") int postId){
-        GetOnePstRes getOnePstRes = postProvider.GetOnePost(postId);
-        return new BaseResponse<>(getOnePstRes);
+        try{
+            GetOnePstRes getOnePstRes = postProvider.GetOnePost(postId);
+            return new BaseResponse<>(getOnePstRes);
+        }catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+
     }
 
     //[POST] 포스트 post API
