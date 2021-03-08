@@ -46,6 +46,12 @@ public class ShelfService {
         //유저게 책장이 있는지 체크
         int userIdJwt = jwtService.getUserIdx();
 
+        // home에 있는 책인지 체크
+        if(shelfProvider.checkBookHome(postShfBookReq, userIdJwt) == 0){
+            throw new BaseException(BaseResponseStatus.POST_BOOKS_INVALID);
+        }
+
+        // 유저의 책장인지 체
         if(shelfProvider.checkUserShf(postShfBookReq, userIdJwt)==0){
             throw new BaseException(BaseResponseStatus.POST_SHELFS_INVAILD_USER);
         }
