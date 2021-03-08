@@ -123,10 +123,10 @@ public class ShelfDao {
         return 0;
     }
 
-    public int checkPtjBooh(PatchShelfReq postShfBookReq) {
-        for (int i = 0; i < postShfBookReq.getBookId().length; i++) {
+    public int checkPtjBooh(PatchShelfReq patchShelfReq) {
+        for (int i = 0; i < patchShelfReq.getBookId().length; i++) {
             int exist = this.jdbcTemplate.queryForObject("select exists(select book_id from shelf_books where book_id = ? " +
-                    "and shelf_id = ? and status= 'Y');", int.class, new Object[]{postShfBookReq.getBookId()[i], postShfBookReq.getShelfId()});
+                    "and shelf_id = ? and status= 'Y');", int.class, new Object[]{patchShelfReq.getBookId()[i], patchShelfReq.getShelfId()});
             if (exist == 1) {
                 return 0;
             }
@@ -141,5 +141,12 @@ public class ShelfDao {
     public int checkUserShf(PostShfBookReq postShfBookReq,int userIdJwt){
         return this.jdbcTemplate.queryForObject("select exists(select shelf.id from shelf where shelf.id =? and" +
                 " user_id = ?)", int.class, new Object[]{postShfBookReq.getShelfId(), userIdJwt});
+    }
+
+    public int checkUserShf(PatchShelfReq patchShelfReq, int userIdJwt){
+        System.out.println(patchShelfReq.getShelfId());
+        System.out.println(userIdJwt);
+        return this.jdbcTemplate.queryForObject("select exists(select shelf.id from shelf where shelf.id =? and" +
+                " user_id = ?)", int.class, new Object[]{patchShelfReq.getShelfId(), userIdJwt});
     }
 }

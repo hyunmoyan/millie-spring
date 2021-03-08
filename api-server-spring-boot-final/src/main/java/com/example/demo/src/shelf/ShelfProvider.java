@@ -50,6 +50,7 @@ public class ShelfProvider {
         if(shelfDao.checkShfId(shelfId) == 0){
             throw new BaseException(BaseResponseStatus.POST_BOOKS_EXITS_TITLE);
         }
+
         GetShelfBooksRes getShelfBooksRes = shelfDao.getShelfBooks(shelfId, userIdxByJwt);
         return getShelfBooksRes;
     }
@@ -64,6 +65,10 @@ public class ShelfProvider {
 
     public int checkUserShf(PostShfBookReq postShfBookReq, int userIdJwt) {
         return shelfDao.checkUserShf(postShfBookReq, userIdJwt);
+    }
+
+    public int checkUserShf(PatchShelfReq patchShelfReq, int userIdJwt ) {
+        return shelfDao.checkUserShf(patchShelfReq, userIdJwt);
     }
 }
 
