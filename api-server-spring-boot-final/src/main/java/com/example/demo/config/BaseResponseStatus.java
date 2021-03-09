@@ -48,7 +48,7 @@ public enum BaseResponseStatus {
     POST_EMPTY_TITLE(false, 2100, "포스트 제목이 비었습니다."),
     POST_EMPTY_CONTENT(false, 2101, "포스트 내용이 비었습니다."),
     POST_NOT_EXIST(false, 2101, "포스트가 존재하지 않습니다."),
-    POST_USER_DIFF(false, 2110, "유저의 포스트가 아닙니다."),
+    POST_USER_DIFF(false, 2110, "유저의 포스트가 아니거나 삭제된 포스트 입니다."),
     /**
      * 3000 : Response 오류
      */

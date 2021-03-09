@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 
-import static com.example.demo.config.BaseResponseStatus.POST_BOOKS_INVALID;
-import static com.example.demo.config.BaseResponseStatus.POST_USER_DIFF;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
 public class PostService {
@@ -42,7 +41,24 @@ public class PostService {
         int postId = postDao.postPst(postPstReq, bookJwtId);
         return new PostPstRes(postId);
     }
-
+// create and delete likes
+    public int postLikesUnlikes(int postId) throws BaseException{
+        int userIdxJwt = jwtService.getUserIdx();
+        // 포스트 존재 확인
+        if(postProvider.checkPostId(postId)==0){
+            throw new BaseException(POST_NOT_EXIST);
+        }
+        // 이미 좋아한 글인지 확인, 좋아요 -> update
+        // unlikes == 0
+        if(postProvider.checkLikes(postId, userIdxJwt)==1){
+            int unlikes =  postDao.updateLikes(postId, userIdxJwt);
+            return unlikes;
+        }
+        // not like -> create likes
+        // likes == 1
+        int likes = postDao.createLikes(postId, userIdxJwt);
+        return likes;
+    }
     // update post!
     public String updatePost(PostPstReq postPstReq, int postId) throws BaseException {
         int userIdxJwt = jwtService.getUserIdx();
@@ -50,8 +66,8 @@ public class PostService {
         if(postProvider.checkPostUser(userIdxJwt, postId) == 0){
             throw new BaseException(POST_USER_DIFF);
         }
-        // 유저가 가진 포스트가 맞는지 체
-        if (postDao.checkUserBook(postPstReq.getBookId(), userIdxJwt) == 0){
+        // 유저가 가진 책이 맞는지 체
+        if (postProvider.checkUserBook(postPstReq.getBookId(), userIdxJwt) == 0){
             throw new BaseException(POST_BOOKS_INVALID);
         }
         String msg = postDao.updatePost(postPstReq, postId);

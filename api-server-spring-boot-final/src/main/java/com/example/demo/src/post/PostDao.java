@@ -78,6 +78,13 @@ public class PostDao {
         return "글이 수정되었습니다";
     }
 
+    // update likes to unlikes
+    public int updateLikes(int postId, int userId){
+        String query = "update post_likes set status='N' where post_id = ? and user_id = ?";
+        this.jdbcTemplate.update(query, new Object[]{postId, userId});
+        return 0;
+    }
+
     // patch post (delete)
     public String deletePost(int postId){
         String query = "update post set status='N' where id = ?";

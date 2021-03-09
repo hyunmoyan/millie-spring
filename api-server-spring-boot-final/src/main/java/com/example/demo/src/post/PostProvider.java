@@ -58,4 +58,13 @@ public class PostProvider {
     public int checkPostUser( int userIdxJwt, int postId){
         return postDao.checkPostUser(userIdxJwt, postId);
     }
+
+    // 유저의 책이 맞는지 체크
+    public int checkUserBook(int bookId, int userIdJwt) {return postDao.checkUserBook(bookId, userIdJwt);}
+
+    // 포스트 존재여부 체크
+    public int checkPostId(int postId){return postDao.checkPostId(postId);}
+
+    // 좋아요 한 글인지 체크
+    public int checkLikes(int postId, int userId) { return postDao.checkLikes(postId, userId);}
 }

@@ -77,6 +77,18 @@ public class PostController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+    // [post] /post/{post_id}/likes
+    @ResponseBody
+    @PutMapping("/{postId}/likes")
+    public BaseResponse<String> postLikesUnlikes(@PathVariable("postId") int postId){
+        try {
+            String msg = postService.postLikesUnlikes(postId);
+            return new BaseResponse<>(msg);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
     // [put] update post
     @ResponseBody
     @PutMapping("/{postId}")
