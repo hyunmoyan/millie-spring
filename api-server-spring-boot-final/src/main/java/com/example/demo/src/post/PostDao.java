@@ -67,19 +67,24 @@ public class PostDao {
 
     }
 
+    //creat likes
+    
+
     //put post! (update)
-    public String updatePost(PostPstReq postPstReq, int bookJwtId){
-        this.jdbcTemplate.update("insert into post (title, content, image, book_id, user_id) VALUES (?,?,?,?,?)",
+    public String updatePost(PostPstReq postPstReq, int postId){
+        this.jdbcTemplate.update("update post set title=?, content=?, image=?, book_id=? where post.id= ?",
                 new Object[]{postPstReq.getTitle(), postPstReq.getContent(), postPstReq.getImage(), postPstReq.getBookId()
-                        , bookJwtId});
+                        , postId});
         return "글이 수정되었습니다";
     }
 
     // patch post (delete)
     public String deletePost(int postId){
-        String query = "update post set status='N' where post.id = ?";
-        this.jdbcTemplate.update(query, String.class, postId);
-        return "삭제가 완료되었습니다.";
+        String query = "update post set status='N' where id = ?";
+        if(this.jdbcTemplate.update(query, postId) == 1){
+            return "삭제가 완료되었습니다.";
+        }
+        return "삭제가 되지 않음";
     }
 // check
     //post 존재 유무 확인
@@ -98,5 +103,11 @@ public class PostDao {
     public int checkUserBook(int bookId, int userIdJwt){
         String query = "select exists(select book_id from history_books where book_id = ? and user_id = ? and status= 'Y')";
         return this.jdbcTemplate.queryForObject(query , int.class, new Object[]{bookId, userIdJwt});
+    }
+
+    // 좋아요 된 글인지 확인
+    public int checkLikes(int postId, int userId){
+        String query = "select exists(select id from post_likes where post_id = ? and user_id = ? and status= 'Y')";
+        return this.jdbcTemplate.queryForObject(query , int.class, new Object[]{postId, userId});
     }
 }
