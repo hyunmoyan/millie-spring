@@ -17,10 +17,10 @@ public class PostDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public GetPstRes getPostList(int bookJwtId) {
+    public GetPstRes getMyPostList(int userId) {
         List<Integer> postIds = this.jdbcTemplate.queryForList("select count(*) as post_cnt\n" +
                 "from post" +
-                " where user_id = ?", int.class, bookJwtId);
+                " where user_id = ?", int.class, userId);
         GetPstRes getPstRes = new GetPstRes();
         getPstRes.setPostCnt(postIds.size());
         List<PostBrief> postBrief = this.jdbcTemplate.query("select post.id as post_id, title, content, image, likes_cnt, date_format(created_at, '%Y.%m.%d') as date\n" +
@@ -36,7 +36,7 @@ public class PostDao {
                         rs.getString("image"),
                         rs.getString("date"),
                         rs.getInt("likes_cnt")
-                ),bookJwtId);
+                ),userId);
         getPstRes.setPostBrief(postBrief);
         return getPstRes;
     }

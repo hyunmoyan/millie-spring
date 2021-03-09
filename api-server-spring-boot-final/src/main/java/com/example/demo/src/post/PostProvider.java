@@ -36,9 +36,13 @@ public class PostProvider {
         this.jwtService = jwtService;
     }
 
-    public GetPstRes getPostList() throws BaseException {
-        int bookJwtId = jwtService.getUserIdx();
-        GetPstRes getPstRes = postDao.getPostList(bookJwtId);
+    public GetPstRes getPostList(int intUserId) throws BaseException {
+        if (intUserId == 0){
+            int userJwtId = jwtService.getUserIdx();
+            GetPstRes getPstRes = postDao.getMyPostList(userJwtId);
+            return getPstRes;
+        }
+        GetPstRes getPstRes = postDao.getMyPostList(intUserId);
         return getPstRes;
     }
 

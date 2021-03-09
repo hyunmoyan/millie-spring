@@ -34,12 +34,13 @@ public class PostController {
         this.postService = postService;
         this.jwtService = jwtService;
     }
-
+// 내 포스트 리스트 받
     @ResponseBody
     @GetMapping("")
-    public BaseResponse<GetPstRes> GetPostList() {
+    public BaseResponse<GetPstRes> GetPostList(@RequestParam(required = false, defaultValue = "0") String user) {
+        int intUserId = Integer.parseInt(user);
         try{
-            GetPstRes getPstRes = postProvider.getPostList();
+            GetPstRes getPstRes = postProvider.getPostList(intUserId);
             return new BaseResponse<>(getPstRes);
         }catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
