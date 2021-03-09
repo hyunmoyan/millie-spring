@@ -52,11 +52,6 @@ public class UserProvider {
         return getUserRes;
     }
 
-
-    public int checkEmail(String email){
-        return userDao.checkEmail(email);
-    }
-
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
         User user = userDao.getPwd(postLoginReq);
         String password;
@@ -77,4 +72,16 @@ public class UserProvider {
 
     }
 
+    public int checkEmail(String email){
+        return userDao.checkEmail(email);
+    }
+
+    //팔로우 중인지 체크크
+    public int checkFollow(int userId, int userIdtoflw){
+        return userDao.checkFollow(userId, userIdtoflw);
+    }
+    //유저가 존재하는지 체
+    public int checkUser(int userIdtoflw){
+        return userDao.checkUser(userIdtoflw);
+    }
 }

@@ -59,4 +59,19 @@ public class UserService {
         String jwt = jwtService.createJwt(userIdx);
         return new PostUserRes(jwt,userIdx);
     }
+
+    public String createFollow(int userIdtoflw) throws BaseException{
+        int userId = jwtService.getUserIdx();
+        //유저가 존재하지 않는 경
+       if(userProvider.checkUser(userIdtoflw)==0){
+            throw new BaseException(USERS_EMPTY_USER_ID);
+        }
+       //이미 팔로우하고 있을때
+       if(userProvider.checkFollow(userId, userIdtoflw)==1){
+           String msg = userDao.upadateUnFollow(userId, userIdtoflw);
+           return msg;
+       }
+       String msg = userDao.createFollow(userId, userIdtoflw);
+       return msg;
+    }
 }
