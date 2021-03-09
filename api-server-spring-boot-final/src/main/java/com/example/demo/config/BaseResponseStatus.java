@@ -12,6 +12,7 @@ public enum BaseResponseStatus {
      */
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
     COLLECTION_SUCCESS(true, 1001, "컬렉션을 가져오는데 성공했습니다."),
+    COMMENTS_EMPTY(true, 1010, "현재 댓글이 없습니다."),
 
     /**
      * 2000 : Request 오류
@@ -42,11 +43,19 @@ public enum BaseResponseStatus {
     PATCH_SHELFS_ALREADY_DELETED(false, 2040, "shelf: 책장에 책이 존재하지 않습니다"),
     GET_SHELF_INVALID_ID(false, 2034, "shelf: 존재하지 않는 책장입니다."),
     POST_SHELFS_INVAILD_USER(false, 2035, "유저가 가진 책장이 아닙니다."),
-
+    POST_BOOKS_INVALID(false, 2040, "추가할 수 없는 책 id 입니다. 읽은 목록에 없는 책입니다."),
 
     //posts
     POST_EMPTY_TITLE(false, 2100, "포스트 제목이 비었습니다."),
     POST_EMPTY_CONTENT(false, 2101, "포스트 내용이 비었습니다."),
+    POST_NOT_EXIST(false, 2101, "포스트가 존재하지 않습니다."),
+    POST_USER_DIFF(false, 2110, "유저의 포스트가 아닙니다."),
+
+    //comments
+    COMMENT_EMPTY(false, 2200, "댓글을 작성해 주세요."),
+    COMMENT_USER_DIFF(false, 2201, "삭제할 수 없는 댓글입니다."),
+    COMMENT_POST_DIFF(false, 2202, "다른 포스트의 댓글입니다."),
+    COMMENT_POST_DELETED(false, 2204, "이미 삭제된 댓글입니다."),
     /**
      * 3000 : Response 오류
      */

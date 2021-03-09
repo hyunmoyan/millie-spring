@@ -17,7 +17,7 @@ public class ShelfDao {
 
     @Autowired
     public void setDataSource(DataSource dataSource) { this.jdbcTemplate = new JdbcTemplate(dataSource); }
-
+// 책장 리스
     public GetShelfListRes getShelfList(int userIdxByJwt) {
         List<ShelfListBook> shelfList = new ArrayList<>();
         List<Integer> shelf = this.jdbcTemplate.queryForList("select id from shelf where shelf.user_id = ?"
@@ -39,39 +39,40 @@ public class ShelfDao {
         getShelfListRes.setShelfList(shelfList);
         return getShelfListRes;
     }
-
+ // 책장 내 모든 책 리스
     public GetTotalShelfRes getTotalShelf(int sequence, int userId) {
         String query ="select book.id as book_id, title, author, file, image\n" +
                 "from book inner join history_books on book.id = history_books.book_id ";
 
         switch (sequence){
             //최근 담은 순
-            case 1: query = query + "where user_id = ? order by history_books.created_at;";
+            case 1: query = query + "where user_id = ? and history_books.status = 'Y' order by history_books.created_at;";
                 break;
             //제목
-            case 2: query = query + "where user_id = ? order by binary title;";
+            case 2: query = query + "where user_id = ? and history_books.status = 'Y' order by binary title;";
                 break;
             // 작가
-            case 3: query = query + "where user_id = ? order by binary author;";
+            case 3: query = query + "where user_id = ? and history_books.status = 'Y' order by binary author;";
                 break;
             case 4: query = query + "join book_info on book.id = book_info.book_id " +
-                    "where user_id = 3 order by paper_date desc;";
+                    "where user_id = ? and history_books.status = 'Y' order by paper_date desc;";
                 break;
             case 5: query = query + "left join (select book_id, max(created_at) as recent from history_log group by book_id) l on l.book_id = history_books.book_id " +
-                    "where history_books.user_id = ? order by l.recent desc";
+                    "where history_books.user_id = ? and history_books.status = 'Y' order by l.recent desc";
                 break;
-            case 6: query = query + "where user_id = ? order by binary publisher;";
+            case 6: query = query + "where user_id = ? and history_books.status = 'Y' order by binary publisher;";
                 break;
         }
         GetTotalShelfRes getTotalShelfRes = new GetTotalShelfRes();
         getTotalShelfRes.setBookCnt(this.jdbcTemplate.queryForObject("select count(title) as book_cnt\n" +
                 "from book\n" +
                 "         inner join history_books on book.id = history_books.book_id\n" +
-                "                     where history_books.user_id = ?", int.class, userId));
+                "                     where history_books.user_id = ?  and history_books.status = 'Y'", int.class, userId));
         getTotalShelfRes.setBooks(this.jdbcTemplate.queryForList(query, userId));
         return getTotalShelfRes;
     }
 
+    // 책장내 책 리스
     public GetShelfBooksRes getShelfBooks(int shelfId, int userIdxByJwt) {
         String query = "select shelf.name as name, shelf_books.book_id as book_id, title, author, image, concat(percentage, \"%\") as percent,\n" +
                 "       if(datediff(now(), shelf_books.created_at) > 30, '만료', datediff(now(), shelf_books.created_at)) as exist_day from shelf_books\n" +
@@ -111,6 +112,18 @@ public class ShelfDao {
         }
         return postShfBookReq.getBookId().length+"권 삭제 되었습니다.";
     }
+//체크용
+
+    public int checkBookHome(PostShfBookReq postShfBookReq, int userIdJwt){
+        for(int i =0; i<postShfBookReq.getBookId().length; i++ ){
+            int exist = this.jdbcTemplate.queryForObject("select exists(select book_id from history_books where book_id = ? and user_id = ? and status= 'Y')"
+                    , int.class, new Object[]{postShfBookReq.getBookId()[i], userIdJwt});
+            if (exist == 1){
+                return 1;
+            }
+        }
+        return 0;
+    }
 
     public int checkShfBook(PostShfBookReq postShfBookReq){
         for(int i =0; i<postShfBookReq.getBookId().length; i++ ){
@@ -123,10 +136,10 @@ public class ShelfDao {
         return 0;
     }
 
-    public int checkPtjBooh(PatchShelfReq postShfBookReq) {
-        for (int i = 0; i < postShfBookReq.getBookId().length; i++) {
+    public int checkPtjBooh(PatchShelfReq patchShelfReq) {
+        for (int i = 0; i < patchShelfReq.getBookId().length; i++) {
             int exist = this.jdbcTemplate.queryForObject("select exists(select book_id from shelf_books where book_id = ? " +
-                    "and shelf_id = ? and status= 'Y');", int.class, new Object[]{postShfBookReq.getBookId()[i], postShfBookReq.getShelfId()});
+                    "and shelf_id = ? and status= 'Y');", int.class, new Object[]{patchShelfReq.getBookId()[i], patchShelfReq.getShelfId()});
             if (exist == 1) {
                 return 0;
             }
@@ -134,12 +147,17 @@ public class ShelfDao {
         return 1;
     }
     public int checkShfId(int shelfId){
-        return this.jdbcTemplate.queryForObject("select exists(select shelf.id from shelf where shelf.id = ?);",
+        return this.jdbcTemplate.queryForObject("select exists(select shelf.id from shelf where shelf.id = ? and status ='Y');",
                 int.class, shelfId);
     }
 
     public int checkUserShf(PostShfBookReq postShfBookReq,int userIdJwt){
         return this.jdbcTemplate.queryForObject("select exists(select shelf.id from shelf where shelf.id =? and" +
-                " user_id = ?)", int.class, new Object[]{postShfBookReq.getShelfId(), userIdJwt});
+                " user_id = ? and shelf.status = 'Y')", int.class, new Object[]{postShfBookReq.getShelfId(), userIdJwt});
+    }
+
+    public int checkUserShf(PatchShelfReq patchShelfReq, int userIdJwt){
+        return this.jdbcTemplate.queryForObject("select exists(select shelf.id from shelf where shelf.id =? and" +
+                " user_id = ?)", int.class, new Object[]{patchShelfReq.getShelfId(), userIdJwt});
     }
 }

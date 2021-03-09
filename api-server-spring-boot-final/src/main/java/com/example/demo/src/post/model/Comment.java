@@ -7,11 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PostBrief {
-    private int postId;
-    private String title;
-    private String content;
-    private String image;
+public class Comment {
+    private int parentId = 0;
+    private int commentId;
+    private int userId;
+    private String nickName;
+    private String comment;
     private String date;
-    private int likeCnt;
 }

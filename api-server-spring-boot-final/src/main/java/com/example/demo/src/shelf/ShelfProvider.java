@@ -48,22 +48,35 @@ public class ShelfProvider {
     public GetShelfBooksRes getShelfBooks(int shelfId) throws BaseException{
         int userIdxByJwt = jwtService.getUserIdx();
         if(shelfDao.checkShfId(shelfId) == 0){
-            throw new BaseException(BaseResponseStatus.POST_BOOKS_EXITS_TITLE);
+            throw new BaseException(BaseResponseStatus.GET_SHELF_INVALID_ID);
         }
+
         GetShelfBooksRes getShelfBooksRes = shelfDao.getShelfBooks(shelfId, userIdxByJwt);
         return getShelfBooksRes;
     }
 
+    //home에 있는 책인지 체크
+    public int checkBookHome(PostShfBookReq postShfBookReq, int userIdJwt){
+        return shelfDao.checkBookHome(postShfBookReq, userIdJwt);
+    }
+
+    // 책이 이미 존재하는지 체크 (패치 용)
     public int checkShfBook(PatchShelfReq postShfBookReq) {
         return shelfDao.checkPtjBooh(postShfBookReq);
     }
 
+    //책이 이미 존재하는지 체크 (포스트 용)
     public int checkShfBook(PostShfBookReq postShfBookReq) {
         return shelfDao.checkShfBook(postShfBookReq);
     }
 
+    //유저책장인지 체크
     public int checkUserShf(PostShfBookReq postShfBookReq, int userIdJwt) {
         return shelfDao.checkUserShf(postShfBookReq, userIdJwt);
+    }
+
+    public int checkUserShf(PatchShelfReq patchShelfReq, int userIdJwt ) {
+        return shelfDao.checkUserShf(patchShelfReq, userIdJwt);
     }
 }
 

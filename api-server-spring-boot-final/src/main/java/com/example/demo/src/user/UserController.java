@@ -102,4 +102,15 @@ public class UserController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+    @ResponseBody
+    @PostMapping("/follow/{userId}")
+    public BaseResponse<String> createFollow(@PathVariable("userId") int userIdtoflw){
+        try{
+            String msg = userService.createFollow(userIdtoflw);
+            return new BaseResponse<>(msg);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 }

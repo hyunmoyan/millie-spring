@@ -100,13 +100,13 @@ public class ShelfController {
 
     @ResponseBody
     @PatchMapping("/{shelfId}/books")
-    public BaseResponse<PostShfBookRes> PatchShfBook(@PathVariable("shelfId") int shelfId, @RequestBody PatchShelfReq postShfBookReq) throws BaseException {
-        postShfBookReq.setShelfId(shelfId);
-        if (postShfBookReq.getShelfId() == 0 || postShfBookReq.getBookId().length == 0){
+    public BaseResponse<PostShfBookRes> PatchShfBook(@PathVariable("shelfId") int shelfId, @RequestBody PatchShelfReq patchShelfReq) {
+        patchShelfReq.setShelfId(shelfId);
+        if (patchShelfReq.getShelfId() == 0 || patchShelfReq.getBookId().length == 0){
             return new BaseResponse(SHELFS_ID_EMPTY);
         }
         try{
-            PostShfBookRes postShfBookRes = shelfService.deleteShfBook(postShfBookReq);
+            PostShfBookRes postShfBookRes = shelfService.deleteShfBook(patchShelfReq);
             return new BaseResponse<>(postShfBookRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

@@ -45,6 +45,13 @@ public class ShelfService {
 
         //유저게 책장이 있는지 체크
         int userIdJwt = jwtService.getUserIdx();
+
+        // home에 있는 책인지 체크
+        if(shelfProvider.checkBookHome(postShfBookReq, userIdJwt) == 0){
+            throw new BaseException(BaseResponseStatus.POST_BOOKS_INVALID);
+        }
+
+        // 유저의 책장인지 체
         if(shelfProvider.checkUserShf(postShfBookReq, userIdJwt)==0){
             throw new BaseException(BaseResponseStatus.POST_SHELFS_INVAILD_USER);
         }
@@ -59,11 +66,18 @@ public class ShelfService {
         return new PostShfBookRes(message);
     }
 
-    public PostShfBookRes deleteShfBook(PatchShelfReq postShfBookReq) throws BaseException {
-        if(shelfProvider.checkShfBook(postShfBookReq) == 1){
+    public PostShfBookRes deleteShfBook(PatchShelfReq patchShelfReq) throws BaseException {
+
+        int userIdJwt = jwtService.getUserIdx();
+
+        if(shelfProvider.checkUserShf(patchShelfReq, userIdJwt)==0){
+            throw new BaseException(BaseResponseStatus.POST_SHELFS_INVAILD_USER);
+        }
+
+        if(shelfProvider.checkShfBook(patchShelfReq) == 1){
             throw new BaseException(BaseResponseStatus.PATCH_SHELFS_ALREADY_DELETED);
         }
-        String message = shelfDao.deleteShfBook(postShfBookReq);
+        String message = shelfDao.deleteShfBook(patchShelfReq);
         return new PostShfBookRes(message);
     }
 }

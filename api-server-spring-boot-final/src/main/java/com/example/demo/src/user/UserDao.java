@@ -35,7 +35,7 @@ public class UserDao {
                 "                           from follow\n" +
                 "                                    right join user on user.id = following_id\n" +
                 "                           group by id) following on following.id = follower.id) follow_tb on follow_tb.id = user.id\n" +
-                "where user.id = ?;";
+                "where user.id = ? and follow.status='Y';";
         return this.jdbcTemplate.query(query,
                 (rs, rowNum) -> new GetUserInfoRes(
                         rs.getString("nickname"),
@@ -65,6 +65,18 @@ public class UserDao {
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
     }
 
+    //팔로우 등록
+    public String createFollow(int userId, int userIdtoflw){
+        String query = "insert into follow (follower_id, following_id) values (?,?)";
+        this.jdbcTemplate.update(query, userId, userIdtoflw);
+        return "팔로우 되었습니다.";
+    }
+
+    public String upadateUnFollow(int userId,int userIdtoflw){
+        String query = "update follow set status='N' where follower_id=? and following_id=?";
+        this.jdbcTemplate.update(query,userId, userIdtoflw);
+        return "팔로우 취소되었습니다.";
+    }
     public int checkEmail(String email){
         return this.jdbcTemplate.queryForObject("select exists(select email from UserInfo where email = ?)",
                 int.class,
@@ -87,5 +99,12 @@ public class UserDao {
         );
 
     }
-
+    public int checkFollow(int userId, int userIdtoflw){
+        String query = "select exists(select id from follow where follower_id=? and following_id=? and status='Y')";
+        return this.jdbcTemplate.queryForObject(query, int.class, userId, userIdtoflw);
+    }
+    public int checkUser(int userIdtoflw){
+        String query = "select exists(select id from user where status='Y' and id=?)";
+        return this.jdbcTemplate.queryForObject(query, int.class, userIdtoflw);
+    }
 }
