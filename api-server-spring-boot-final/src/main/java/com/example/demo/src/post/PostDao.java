@@ -98,7 +98,16 @@ public class PostDao {
         return this.jdbcTemplate.queryForObject("select last_insert_id()",int.class);
 
     }
-
+    //create comment
+    public String createComment(Comment comment, int postId){
+        String query = "insert into post_comment (parent, user_id, post_id, comment) values (?,?,?,?)";
+        this.jdbcTemplate.update(query,
+                new Object[]{comment.getParentId(), comment.getUserId(), postId, comment.getComment()});
+        if(comment.getParentId() == 0){
+            return "댓글이 등록되었습니다";
+        }
+        return "대댓글이 등록되었습니다.";
+    }
     //creat likes
     public int createLikes(int postId, int userId){
         String query = "insert into post_likes (post_id, user_id) values (?,?)";

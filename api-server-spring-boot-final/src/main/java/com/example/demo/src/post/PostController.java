@@ -2,6 +2,7 @@ package com.example.demo.src.post;
 
 import com.example.demo.src.post.PostProvider;
 import com.example.demo.src.post.PostService;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -96,6 +97,17 @@ public class PostController {
         try {
             int likes = postService.postLikesUnlikes(postId);
             return new BaseResponse<>(likes);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("{postId}/comments")
+    public BaseResponse<String> createComment(@PathVariable("postId") int postId, @RequestBody Comment comment){
+        try {
+            String msg = postService.createComment(comment, postId);
+            return new BaseResponse<>(msg);
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }

@@ -2,6 +2,7 @@ package com.example.demo.src.post;
 
 
 import com.example.demo.config.BaseException;
+import com.example.demo.src.post.model.Comment;
 import com.example.demo.src.post.model.PostPstReq;
 import com.example.demo.src.post.model.PostPstRes;
 import com.example.demo.utils.JwtService;
@@ -41,6 +42,18 @@ public class PostService {
         int postId = postDao.postPst(postPstReq, bookJwtId);
         return new PostPstRes(postId);
     }
+
+// create comment
+    public String createComment(Comment comment, int postId) throws BaseException {
+        int bookJwtId = jwtService.getUserIdx();
+        if(postProvider.checkPostId(postId)==0){
+            throw new BaseException(POST_NOT_EXIST);
+        }
+        comment.setUserId(bookJwtId);
+        String msg = postDao.createComment(comment, postId);
+        return msg;
+    }
+
 // create and delete likes
     public int postLikesUnlikes(int postId) throws BaseException{
         int userIdxJwt = jwtService.getUserIdx();
@@ -62,6 +75,9 @@ public class PostService {
     // update post!
     public String updatePost(PostPstReq postPstReq, int postId) throws BaseException {
         int userIdxJwt = jwtService.getUserIdx();
+        if(postProvider.checkPostId(postId)==0){
+            throw new BaseException(POST_NOT_EXIST);
+        }
         // 유저의 포스트가 맞는지 확인
         if(postProvider.checkPostUser(userIdxJwt, postId) == 0){
             throw new BaseException(POST_USER_DIFF);
