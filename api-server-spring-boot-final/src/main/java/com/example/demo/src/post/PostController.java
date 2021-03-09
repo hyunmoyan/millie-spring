@@ -132,6 +132,25 @@ public class PostController {
         }
     }
 
+    @ResponseBody
+    @PutMapping("/{postId}/comments")
+    public BaseResponse<String> updateComment(@PathVariable("postId") int postId, @RequestBody PutCommentReq putCommentReq){
+        if(putCommentReq.getComment()==null| putCommentReq.getComment()==""){
+            return new BaseResponse<>(COMMENT_EMPTY);
+        }
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            //유저와 다를 경
+            if(putCommentReq.getUserId() != userIdxByJwt){
+                return new BaseResponse<>(COMMENT_USER_DIFF);
+            }
+            String msg = postService.updateComment(putCommentReq, postId);
+            return new BaseResponse<>(msg);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
     // [patch] delete post
     @ResponseBody
     @PatchMapping("/{postId}")
