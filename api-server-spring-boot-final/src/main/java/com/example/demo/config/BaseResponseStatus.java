@@ -52,6 +52,10 @@ public enum BaseResponseStatus {
     POST_USER_DIFF(false, 2110, "유저의 포스트가 아닙니다."),
 
     //comments
+    COMMENT_EMPTY(false, 2200, "댓글을 작성해 주세요."),
+    COMMENT_USER_DIFF(false, 2201, "삭제할 수 없는 댓글입니다."),
+    COMMENT_POST_DIFF(false, 2202, "다른 포스트의 댓글입니다."),
+    COMMENT_POST_DELETED(false, 2204, "이미 삭제된 댓글입니다."),
     /**
      * 3000 : Response 오류
      */

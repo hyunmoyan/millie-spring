@@ -78,7 +78,6 @@ public class PostController {
     public BaseResponse<PostPstRes> PostPst(@RequestBody PostPstReq postPstReq) {
         if (postPstReq.getTitle().length() == 0| postPstReq.getTitle() == ""){
             return new BaseResponse<>(POST_EMPTY_TITLE);
-
         }
         if (postPstReq.getContent().length() == 0 | postPstReq.getContent() == ""){
             return new BaseResponse<>(POST_EMPTY_CONTENT);
@@ -105,6 +104,9 @@ public class PostController {
     @ResponseBody
     @PostMapping("{postId}/comments")
     public BaseResponse<String> createComment(@PathVariable("postId") int postId, @RequestBody Comment comment){
+        if(comment.getComment()==null|comment.getComment()==""){
+            return new BaseResponse<>(COMMENT_EMPTY);
+        }
         try {
             String msg = postService.createComment(comment, postId);
             return new BaseResponse<>(msg);
@@ -116,11 +118,10 @@ public class PostController {
     @ResponseBody
     @PutMapping("/{postId}")
     public BaseResponse<String> updatePost(@PathVariable("postId") int postId, @RequestBody PostPstReq postPstReq){
-        if (postPstReq.getTitle().length() == 0| postPstReq.getTitle() == ""){
+        if (postPstReq.getTitle() == null| postPstReq.getTitle() == ""){
             return new BaseResponse<>(POST_EMPTY_TITLE);
-
         }
-        if (postPstReq.getContent().length() == 0 | postPstReq.getContent() == ""){
+        if (postPstReq.getContent() == null | postPstReq.getContent() == ""){
             return new BaseResponse<>(POST_EMPTY_CONTENT);
         }
         try {
@@ -137,6 +138,19 @@ public class PostController {
     public BaseResponse<String> deletePost(@PathVariable("postId") int postId){
         try {
             String msg = postService.deletePost(postId);
+            return new BaseResponse<>(msg);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    // [patch] delete comment
+    @ResponseBody
+    @PatchMapping("/{postId}/comments/{commentId}")
+    public BaseResponse<String> deleteComment(@PathVariable("postId") int postId
+            , @PathVariable("commentId") int commentId){
+        try {
+            String msg = postService.deleteComment(postId, commentId);
             return new BaseResponse<>(msg);
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());

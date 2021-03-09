@@ -138,6 +138,15 @@ public class PostDao {
         }
         return "삭제가 되지 않음";
     }
+
+    // delete comments
+    public String deleteComment(int commentId){
+        String query = "update post_comment set status='N' where id = ?";
+        if(this.jdbcTemplate.update(query, commentId) == 1){
+            return "댓글이 삭제되었습니다.";
+        }
+        return "댓글 삭제 실패";
+    }
 // check
     //post 존재 유무 확인
     public int checkPostId(int postId){
@@ -167,5 +176,16 @@ public class PostDao {
     public int checkComments(int postId){
         String query = "select exists(select id from post_comment where post_id=? and parent=0 and status='Y')";
         return this.jdbcTemplate.queryForObject(query, int.class, postId);
+    }
+
+    // 자신의 댓글인지 확인
+    public int checkUserComment(int commentId, int userId){
+        String query = "select exists(select id from post_comment where id=? and user_id=? and status='Y')";
+        return this.jdbcTemplate.queryForObject(query, int.class, commentId, userId);
+    }
+
+    public int checkPostComment(int postId, int commentId){
+        String query = "select exists(select id from post_comment where id=? and post_id = ?)";
+        return this.jdbcTemplate.queryForObject(query, int.class, commentId, postId);
     }
 }

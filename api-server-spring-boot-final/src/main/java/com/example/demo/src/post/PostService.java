@@ -103,4 +103,22 @@ public class PostService {
         String msg = postDao.deletePost(postId);
         return msg;
     }
+
+    //delete comments
+    public String deleteComment(int postId, int commentId) throws BaseException{
+        if(postProvider.checkPostId(postId)==0){
+            throw new BaseException(POST_NOT_EXIST);
+        }
+        // 포스트에 댓글이 존재하는지 여부
+        if(postProvider.checkPostComment(postId, commentId) == 0){
+            throw new BaseException(COMMENT_USER_DIFF);
+        }
+        int userIdxJwt = jwtService.getUserIdx();
+        //내가 쓴 댓글인지 확
+        if(postProvider.checkUserComment(commentId, userIdxJwt) == 0){
+            throw new BaseException(COMMENT_USER_DIFF);
+        }
+        String msg = postDao.deleteComment(commentId);
+        return msg;
+    }
 }

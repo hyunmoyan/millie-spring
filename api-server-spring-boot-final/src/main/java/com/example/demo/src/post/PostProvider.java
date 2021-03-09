@@ -80,4 +80,10 @@ public class PostProvider {
 
     // 좋아요 한 글인지 체크
     public int checkLikes(int postId, int userId) { return postDao.checkLikes(postId, userId);}
+
+    //내가 쓴 댓글인지 체크
+    public int checkUserComment(int commentId, int userId) {return postDao.checkUserComment(commentId, userId);}
+
+    // 포스트에 해당하는 댓글인지 체크
+    public int checkPostComment(int postId, int commentId) {return postDao.checkPostComment(postId, commentId);}
 }
