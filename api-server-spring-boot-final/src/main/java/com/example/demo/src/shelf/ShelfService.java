@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 
@@ -31,12 +32,14 @@ public class ShelfService {
         this.jwtService = jwtService;
     }
 
+    @Transactional
     public PostShelfRes createShelf(PostShelfReq postShelfReq) throws BaseException {
         int userIdxByJwt = jwtService.getUserIdx();
         int shelfId = shelfDao.createShelf(postShelfReq);
         return new PostShelfRes(shelfId);
     }
 
+    @Transactional
     public PostShfBookRes createShfBook(PostShfBookReq postShfBookReq) throws BaseException {
         // status가 N인 행이 있는 경우
         /*if(shelfProvider.checkShfBook(postShfBookReq) == 1){
@@ -66,6 +69,7 @@ public class ShelfService {
         return new PostShfBookRes(message);
     }
 
+    @Transactional
     public PostShfBookRes deleteShfBook(PatchShelfReq patchShelfReq) throws BaseException {
 
         int userIdJwt = jwtService.getUserIdx();
