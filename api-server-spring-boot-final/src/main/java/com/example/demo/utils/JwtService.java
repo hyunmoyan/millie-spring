@@ -69,4 +69,13 @@ public class JwtService {
         // 3. userIdx 추출
         return claims.getBody().get("userIdx",Integer.class);
     }
+
+    // check if it has token
+    public int checkJwt(){
+        String accessToken = getJwt();
+        if(accessToken == null || accessToken.length() == 0){
+            return 0;
+        }
+        return 1;
+    }
 }
