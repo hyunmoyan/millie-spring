@@ -147,6 +147,14 @@ public class PostDao {
         }
         return "댓글 삭제 실패";
     }
+
+    // update comment
+    public String updateComment(PutCommentReq putCommentReq){
+        String query = "update post_comment set comment=? where id=?";
+        this.jdbcTemplate.update(query , putCommentReq.getComment(), putCommentReq.getCommentId());
+        return "댓글이 수정되었습니다.";
+    }
+
 // check
     //post 존재 유무 확인
     public int checkPostId(int postId){

@@ -5,6 +5,7 @@ import com.example.demo.config.BaseException;
 import com.example.demo.src.post.model.Comment;
 import com.example.demo.src.post.model.PostPstReq;
 import com.example.demo.src.post.model.PostPstRes;
+import com.example.demo.src.post.model.PutCommentReq;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +88,19 @@ public class PostService {
             throw new BaseException(POST_BOOKS_INVALID);
         }
         String msg = postDao.updatePost(postPstReq, postId);
+        return msg;
+    }
+
+    // update comment
+    public String updateComment(PutCommentReq putCommentReq, int postId) throws BaseException {
+        // 포스터 존재여부
+        if(postProvider.checkPostId(postId)==0){
+            throw new BaseException(POST_NOT_EXIST);
+        }
+        if(postProvider.checkPostComment(postId, putCommentReq.getCommentId()) == 0){
+            throw new BaseException(COMMENT_USER_DIFF);
+        }
+        String msg = postDao.updateComment(putCommentReq);
         return msg;
     }
     // delete post
