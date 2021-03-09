@@ -98,7 +98,12 @@ public class PostController {
     // [patch] delete post
     @ResponseBody
     @PatchMapping("/{postId}")
-    public ResponseBody<String> BaseResponse(@PathVariable("postId") int postId, ){
-
+    public BaseResponse<String> deletePost(@PathVariable("postId") int postId){
+        try {
+            String msg = postService.deletePost(postId);
+            return new BaseResponse<>(msg);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
     }
 }

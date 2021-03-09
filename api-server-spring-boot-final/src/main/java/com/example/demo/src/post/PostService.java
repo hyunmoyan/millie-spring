@@ -57,4 +57,14 @@ public class PostService {
         String msg = postDao.updatePost(postPstReq, postId);
         return msg;
     }
+    // delete post
+    public String deletePost(int postId) throws BaseException {
+        int userIdxJwt = jwtService.getUserIdx();
+        // 유저의 포스트가 맞는지 확인
+        if(postProvider.checkPostUser(userIdxJwt, postId) == 0){
+            throw new BaseException(POST_USER_DIFF);
+        }
+        String msg = postDao.deletePost(postId);
+        return msg;
+    }
 }

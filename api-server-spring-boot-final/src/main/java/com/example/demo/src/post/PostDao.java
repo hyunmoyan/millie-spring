@@ -74,6 +74,13 @@ public class PostDao {
                         , bookJwtId});
         return "글이 수정되었습니다";
     }
+
+    // patch post (delete)
+    public String deletePost(int postId){
+        String query = "update post set status='N' where post.id = ?";
+        this.jdbcTemplate.update(query, String.class, postId);
+        return "삭제가 완료되었습니다.";
+    }
 // check
     //post 존재 유무 확인
     public int checkPostId(int postId){
