@@ -12,6 +12,7 @@ public enum BaseResponseStatus {
      */
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
     COLLECTION_SUCCESS(true, 1001, "컬렉션을 가져오는데 성공했습니다."),
+    COMMENTS_EMPTY(true, 1010, "현재 댓글이 없습니다."),
 
     /**
      * 2000 : Request 오류
@@ -48,7 +49,9 @@ public enum BaseResponseStatus {
     POST_EMPTY_TITLE(false, 2100, "포스트 제목이 비었습니다."),
     POST_EMPTY_CONTENT(false, 2101, "포스트 내용이 비었습니다."),
     POST_NOT_EXIST(false, 2101, "포스트가 존재하지 않습니다."),
-    POST_USER_DIFF(false, 2110, "유저의 포스트가 아니거나 삭제된 포스트 입니다."),
+    POST_USER_DIFF(false, 2110, "유저의 포스트가 아닙니다."),
+
+    //comments
     /**
      * 3000 : Response 오류
      */

@@ -76,6 +76,10 @@ public class PostService {
     // delete post
     public String deletePost(int postId) throws BaseException {
         int userIdxJwt = jwtService.getUserIdx();
+        // 포스터 존재여부
+        if(postProvider.checkPostId(postId)==0){
+            throw new BaseException(POST_NOT_EXIST);
+        }
         // 유저의 포스트가 맞는지 확인
         if(postProvider.checkPostUser(userIdxJwt, postId) == 0){
             throw new BaseException(POST_USER_DIFF);

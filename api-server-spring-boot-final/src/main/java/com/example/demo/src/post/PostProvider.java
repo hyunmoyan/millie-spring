@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 
+import static com.example.demo.config.BaseResponseStatus.COMMENTS_EMPTY;
 import static com.example.demo.config.BaseResponseStatus.POST_NOT_EXIST;
 
 @Service
@@ -52,6 +53,18 @@ public class PostProvider {
         }
         GetOnePstRes getOnePstRes = postDao.GetOnePost(postId);
         return getOnePstRes;
+    }
+
+    // get post-comments
+    public GetPostComments getComments(int postId) throws BaseException {
+        if (postDao.checkPostId(postId) == 0){
+            throw new BaseException(POST_NOT_EXIST);
+        }
+        if (postDao.checkComments(postId) == 0){
+            throw new BaseException(COMMENTS_EMPTY);
+        }
+        GetPostComments getPostComments = postDao.getComments(postId);
+        return getPostComments;
     }
 
     // 유저의 포스트가 맞는지 확인

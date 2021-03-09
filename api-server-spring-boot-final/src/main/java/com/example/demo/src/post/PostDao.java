@@ -1,6 +1,7 @@
 package com.example.demo.src.post;
 
 import com.example.demo.src.post.model.*;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -26,7 +27,7 @@ public class PostDao {
         List<PostBrief> postBrief = this.jdbcTemplate.query("select post.id as post_id, title, content, image, likes_cnt, date_format(created_at, '%Y.%m.%d') as date\n" +
                         "from post\n" +
                         "         left join\n" +
-                        "     (select post_id, count(post_id) as likes_cnt from post_likes where value = 'Y' group by post_id) likes\n" +
+                        "     (select post_id, count(post_id) as likes_cnt from post_likes where status = 'Y' group by post_id) likes\n" +
                         "     on likes.post_id = post.id where user_id = ? and status = 'Y'" +
                         "order by created_at desc",
                 (rs, rowNum) -> new PostBrief(
@@ -44,9 +45,9 @@ public class PostDao {
     public GetOnePstRes GetOnePost(int postId) {
         String query = "select post.id as post_id, title, nickname, content, post.image as image, likes_cnt, comment_cnt\n" +
                 "from post join user on post.user_id = user.id\n" +
-                "    left join (select post_id, count(post_id) as comment_cnt from post_comment where status = 'Y' group by post_id) com on com.post_id = post.id\n" +
+                "    left join (select post_id, count(post_id) as comment_cnt from post_comment where status = 'Y' and parent=0 group by post_id) com on com.post_id = post.id\n" +
                 "         left join\n" +
-                "     (select post_id, count(post_id) as likes_cnt from post_likes where value = 'Y' group by post_id) likes\n" +
+                "     (select post_id, count(post_id) as likes_cnt from post_likes where status = 'Y' group by post_id) likes\n" +
                 "     on likes.post_id = post.id where post.id = ?";
         return this.jdbcTemplate.queryForObject(query,
                 (rs, rowNum) -> new GetOnePstRes(
@@ -59,6 +60,37 @@ public class PostDao {
                         rs.getInt("comment_cnt")), postId);
     }
 
+    // get comments
+    public GetPostComments getComments(int postId){
+        //comment likes
+        int commentCnt = this.jdbcTemplate.queryForObject("select count(*) from post_comment where post_id = ? and status='Y' and parent=0", int.class, postId);
+        //comment list
+        String query = "select parent, post_comment.id as comment_id, user_id, nickname, comment, date_format(post_comment.created_at, '%m.%d %H:%i')  as date " +
+                "from post_comment join user on post_comment.user_id = user.id where post_id = ? and post_comment.status = 'Y' ";
+        List<Comment> parentComments = this.jdbcTemplate.query(query + "and parent=0",
+                (rs, rowNum) -> new Comment(
+                        0,
+                        rs.getInt("comment_id"),
+                        rs.getInt("user_id"),
+                        rs.getString("nickname"),
+                        rs.getString("comment"),
+                        rs.getString("date")
+                )
+                , postId);
+        List<Comment> childComments = this.jdbcTemplate.query(query + "and parent!=0",
+                (rs, rowNum) -> new Comment(
+                        rs.getInt("parent"),
+                        rs.getInt("comment_id"),
+                        rs.getInt("user_id"),
+                        rs.getString("nickname"),
+                        rs.getString("comment"),
+                        rs.getString("date")
+                )
+                , postId);
+        GetPostComments getPostComments = new GetPostComments(commentCnt, parentComments, childComments);
+        return getPostComments;
+    }
+
     public int postPst(PostPstReq postPstReq, int bookJwtId){
         this.jdbcTemplate.update("insert into post (title, content, image, book_id, user_id) VALUES (?,?,?,?,?)",
                 new Object[]{postPstReq.getTitle(), postPstReq.getContent(), postPstReq.getImage(), postPstReq.getBookId()
@@ -68,7 +100,11 @@ public class PostDao {
     }
 
     //creat likes
-    
+    public int createLikes(int postId, int userId){
+        String query = "insert into post_likes (post_id, user_id) values (?,?)";
+        this.jdbcTemplate.update(query, new Object[]{postId, userId});
+        return 1;
+    }
 
     //put post! (update)
     public String updatePost(PostPstReq postPstReq, int postId){
@@ -116,5 +152,11 @@ public class PostDao {
     public int checkLikes(int postId, int userId){
         String query = "select exists(select id from post_likes where post_id = ? and user_id = ? and status= 'Y')";
         return this.jdbcTemplate.queryForObject(query , int.class, new Object[]{postId, userId});
+    }
+
+    // 댓글이 있는지 확인
+    public int checkComments(int postId){
+        String query = "select exists(select id from post_comment where post_id=? and parent=0 and status='Y')";
+        return this.jdbcTemplate.queryForObject(query, int.class, postId);
     }
 }

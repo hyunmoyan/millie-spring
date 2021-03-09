@@ -59,6 +59,18 @@ public class PostController {
 
     }
 
+    // [get] /post/{post_id}/comments
+    @ResponseBody
+    @GetMapping("/{postId}/comments")
+    public BaseResponse<GetPostComments> getComments(@PathVariable("postId") int postId){
+        try{
+            GetPostComments getPostComments = postProvider.getComments(postId);
+            return new BaseResponse<>(getPostComments);
+        }catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
     //[POST] 포스트 post API
     @ResponseBody
     @PostMapping("")
@@ -79,16 +91,15 @@ public class PostController {
     }
     // [post] /post/{post_id}/likes
     @ResponseBody
-    @PutMapping("/{postId}/likes")
-    public BaseResponse<String> postLikesUnlikes(@PathVariable("postId") int postId){
+    @PostMapping("/{postId}/likes")
+    public BaseResponse<Integer> postLikesUnlikes(@PathVariable("postId") int postId){
         try {
-            String msg = postService.postLikesUnlikes(postId);
-            return new BaseResponse<>(msg);
+            int likes = postService.postLikesUnlikes(postId);
+            return new BaseResponse<>(likes);
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }
     }
-
     // [put] update post
     @ResponseBody
     @PutMapping("/{postId}")
