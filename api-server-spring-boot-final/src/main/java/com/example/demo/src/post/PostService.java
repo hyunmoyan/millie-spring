@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 
+import static com.example.demo.config.BaseResponseStatus.POST_BOOKS_INVALID;
+import static com.example.demo.config.BaseResponseStatus.POST_USER_DIFF;
+
 @Service
 public class PostService {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -33,10 +36,25 @@ public class PostService {
         this.postProvider = postProvider;
         this.jwtService = jwtService;
     }
-
+// create post!
     public PostPstRes PostPst(PostPstReq postPstReq) throws BaseException {
         int bookJwtId = jwtService.getUserIdx();
         int postId = postDao.postPst(postPstReq, bookJwtId);
         return new PostPstRes(postId);
+    }
+
+    // update post!
+    public String updatePost(PostPstReq postPstReq, int postId) throws BaseException {
+        int userIdxJwt = jwtService.getUserIdx();
+        // 유저의 포스트가 맞는지 확인
+        if(postProvider.checkPostUser(userIdxJwt, postId) == 0){
+            throw new BaseException(POST_USER_DIFF);
+        }
+        // 유저가 가진 포스트가 맞는지 체
+        if (postDao.checkUserBook(postPstReq.getBookId(), userIdxJwt) == 0){
+            throw new BaseException(POST_BOOKS_INVALID);
+        }
+        String msg = postDao.updatePost(postPstReq, postId);
+        return msg;
     }
 }

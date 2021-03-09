@@ -75,6 +75,30 @@ public class PostController {
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }
+    }
+    // [put] update post
+    @ResponseBody
+    @PutMapping("/{postId}")
+    public BaseResponse<String> updatePost(@PathVariable("postId") int postId, @RequestBody PostPstReq postPstReq){
+        if (postPstReq.getTitle().length() == 0| postPstReq.getTitle() == ""){
+            return new BaseResponse<>(POST_EMPTY_TITLE);
+
+        }
+        if (postPstReq.getContent().length() == 0 | postPstReq.getContent() == ""){
+            return new BaseResponse<>(POST_EMPTY_CONTENT);
+        }
+        try {
+            String msg = postService.updatePost(postPstReq, postId);
+            return new BaseResponse<>(msg);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    // [patch] delete post
+    @ResponseBody
+    @PatchMapping("/{postId}")
+    public ResponseBody<String> BaseResponse(@PathVariable("postId") int postId, ){
 
     }
 }

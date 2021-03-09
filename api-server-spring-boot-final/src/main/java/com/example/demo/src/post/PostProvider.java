@@ -49,4 +49,9 @@ public class PostProvider {
         GetOnePstRes getOnePstRes = postDao.GetOnePost(postId);
         return getOnePstRes;
     }
+
+    // 유저의 포스트가 맞는지 확인
+    public int checkPostUser( int userIdxJwt, int postId){
+        return postDao.checkPostUser(userIdxJwt, postId);
+    }
 }

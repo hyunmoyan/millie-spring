@@ -67,8 +67,29 @@ public class PostDao {
 
     }
 
+    //put post! (update)
+    public String updatePost(PostPstReq postPstReq, int bookJwtId){
+        this.jdbcTemplate.update("insert into post (title, content, image, book_id, user_id) VALUES (?,?,?,?,?)",
+                new Object[]{postPstReq.getTitle(), postPstReq.getContent(), postPstReq.getImage(), postPstReq.getBookId()
+                        , bookJwtId});
+        return "글이 수정되었습니다";
+    }
+// check
+    //post 존재 유무 확인
     public int checkPostId(int postId){
         String query = "select exists(select id from post where id = ? and status = 'Y')";
         return this.jdbcTemplate.queryForObject(query, int.class, postId);
+    }
+
+    // 유저의 포스트가 맞는지 확인
+    public int checkPostUser(int userIdxJwt, int postId ){
+        String query = "select exists(select id from post where post.id = ? and user_id = ? and status= 'Y')";
+        return this.jdbcTemplate.queryForObject(query, int.class, new Object[]{postId, userIdxJwt});
+    }
+
+    // 책이 읽은 목록에 있는지 확인
+    public int checkUserBook(int bookId, int userIdJwt){
+        String query = "select exists(select book_id from history_books where book_id = ? and user_id = ? and status= 'Y')";
+        return this.jdbcTemplate.queryForObject(query , int.class, new Object[]{bookId, userIdJwt});
     }
 }
