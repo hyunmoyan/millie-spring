@@ -1,5 +1,3 @@
-
-
 <img src="https://www.millie.co.kr/favicon/millie_og.png" height="100"/>
 
 # millie(밀리의 서재) REST API
@@ -13,13 +11,8 @@
 
 > REST API 
 ## 핵심 기능  Key Feature
-- 2호선 역을 검색하면, 카페 정보가 카드형태로 보여집니다. (Search station name, then we will show you cafes in card shape)
-- 2호선 역 근처, 나만 아는 카페를 등록하실 수 있습니다. (You can upload cafe that you think it`s special)
-
-## 사용 How To Use
-- 사용하고 싶도록 유용한 몇 가지 예를 적습니다. 코드 블록과 스크린샷 포함.
-- (wiki가 있을 경우) _더 많은 예시와 사용 예제는 [Wiki](wiki)를 참고하세요._
-  ![](header.png)
+- 핸드폰으로도 쉽게 책을 읽을 수 있습니다.
+- 책을 읽고, 기록하고, 다른 사람들의 포스트를 보고 팔로할 수 있습니다.
 
 ## API
 Index | Method | URI | Description
