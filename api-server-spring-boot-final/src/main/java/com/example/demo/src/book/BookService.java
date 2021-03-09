@@ -37,6 +37,7 @@ public class BookService {
     }
 
     //POST
+    @Transactional
     public PostBookRes createBook(PostBookReq postBookReq) throws BaseException {
         if(bookProvider.checkTitle(postBookReq.getTitle())==1){
             throw new BaseException(BaseResponseStatus.POST_BOOKS_EXITS_TITLE);
